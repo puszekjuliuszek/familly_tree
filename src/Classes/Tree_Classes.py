@@ -33,6 +33,18 @@ class Person:
         print(f"Children: {self.children}")
         print(f"Partners: {self.partners}")
 
+    def to_dict(self) -> dict:
+        return {
+            "person_id": self.person_id,
+            "father_id": self.father_id,
+            "mother_id": self.mother_id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "birth_date": self.birth_date,
+            "death_date": self.death_date,
+            "children": self.children,
+            "partners": self.partners,
+        }
 
 class Node:
     def __init__(self, person: Person):
