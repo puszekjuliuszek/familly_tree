@@ -1,11 +1,11 @@
 import json
 import os
 from src.Classes import Tree_Classes as c
-from typing import List
+import queue
 
 
 # szukanie Noda na liscie
-def binary_search(arr: List[c.Node], target: int, l: int = 0, r: int = None) -> c.Node:
+def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> c.Node:
     if r is None:
         r = len(arr) - 1
 
@@ -20,7 +20,7 @@ def binary_search(arr: List[c.Node], target: int, l: int = 0, r: int = None) -> 
         return binary_search(arr, target, l, mid - 1, )
 
 
-def readData(file_name: str, main_person_id: int) -> c.Tree:
+def read_data(file_name: str, main_person_id: int) -> c.Tree:
     # file name, id of main person, zwaraca obiekt Tree osoby o id równemu main_person_id
     file_path = os.path.join(os.getcwd(), "Tree_files", file_name)
     main_tree_root = None
@@ -59,5 +59,33 @@ def readData(file_name: str, main_person_id: int) -> c.Tree:
     return main_tree_root
 
 
+def save_data(root: c.Tree, file_name: str) -> None:
+    file_path = os.path.join(os.getcwd(), "Tree_files", file_name)
+    Q = queue.Queue()
+    Q.put(root.root)
+    to_save = []
+    # BFS <3
+    while not Q.empty():
+        node = Q.get()
+        if node.person.to_dict() not in to_save:
+            to_save.append(node.person.to_dict())
+            if node.mother_node is not None:
+                Q.put(node.mother_node)
+            if node.father_node is not None:
+                Q.put(node.father_node)
+            for partner in node.partner_nodes:
+                Q.put(partner)
+            for child in node.children_nodes:
+                Q.put(child)
+
+    with open(file_path, "w+") as f:
+        json.dump(to_save, f)
+    return
+
+
 if __name__ == "__main__":
-    readData('ZawislakTree.json', 3)
+    root = read_data('ZawislakTree.json', 1)
+
+    save_data(root, "Zawislak2.json")
+
+    root2 = read_data("Zawislak2.json", 3)
