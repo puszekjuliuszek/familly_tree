@@ -1,10 +1,11 @@
 import json
 import os
-from src.Classes import Tree_Classes as c
+from src.Classes import person as c
 import queue
 
 
 # szukanie Noda na liscie
+#TODO przebudować wczytywanie i zapisywanie
 def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> c.Node:
     if r is None:
         r = len(arr) - 1
@@ -46,10 +47,10 @@ def read_data(file_name: str, main_person_id: int) -> c.Tree:
             if n.person.mother_id != 0 and n.person.mother_id is not None:
                 n.mother_node = binary_search(Nodes, n.person.mother_id)
 
-            for ids in n.person.partners:
+            for ids in n.person.partners_id:
                 n.partner_nodes.append(binary_search(Nodes, ids))
 
-            for ids in n.person.children:
+            for ids in n.person.children_id:
                 n.partner_nodes.append(binary_search(Nodes, ids))
 
         root = c.Tree(n)
@@ -84,7 +85,7 @@ def save_data(root: c.Tree, file_name: str) -> None:
 
 
 if __name__ == "__main__":
-    root = read_data('ZawislakTree.json', 1)
+    root = read_data('Zawislak2.json', 1)
     root.print_tree()
 
     save_data(root, "Zawislak2.json")

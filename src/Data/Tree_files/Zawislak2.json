@@ -7,8 +7,8 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children": [],
-    "partners": []
+    "children_id": [],
+    "partners_id": []
   },
   {
     "person_id": 4,
@@ -18,13 +18,8 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children": [
-      1,
-      2
-    ],
-    "partners": [
-      3
-    ]
+    "children_id": [],
+    "partners_id": []
   },
   {
     "person_id": 3,
@@ -34,13 +29,8 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children": [
-      1,
-      2
-    ],
-    "partners": [
-      4
-    ]
+    "children_id": [],
+    "partners_id": []
   },
   {
     "person_id": 6,
@@ -50,13 +40,8 @@
     "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children": [
-      4,
-      7
-    ],
-    "partners": [
-      5
-    ]
+    "children_id": [],
+    "partners_id": []
   },
   {
     "person_id": 5,
@@ -66,64 +51,7 @@
     "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children": [
-      4,
-      7
-    ],
-    "partners": [
-      6
-    ]
-  },
-  {
-    "person_id": 2,
-    "father_id": 3,
-    "mother_id": 4,
-    "first_name": "Mikolaj",
-    "last_name": "Zawislak",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "children": [],
-    "partners": []
-  },
-  {
-    "person_id": 7,
-    "father_id": 5,
-    "mother_id": 6,
-    "first_name": "Daniel",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "children": [
-      9
-    ],
-    "partners": [
-      8
-    ]
-  },
-  {
-    "person_id": 8,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Anna",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "children": [
-      9
-    ],
-    "partners": [
-      7
-    ]
-  },
-  {
-    "person_id": 9,
-    "father_id": 7,
-    "mother_id": 8,
-    "first_name": "Lila",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "children": [],
-    "partners": []
+    "children_id": [],
+    "partners_id": []
   }
 ]
