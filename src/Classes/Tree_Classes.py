@@ -1,3 +1,5 @@
+from collections import deque
+
 class Person:
     def __init__(self):
         self.person_id = None
@@ -9,6 +11,9 @@ class Person:
         self.death_date = None
         self.children = []
         self.partners = []
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
     #dodałem dwie metody do czytania i sprawdzania danych
     def update_from_dict(self, data: dict):
@@ -58,3 +63,27 @@ class Node:
 class Tree:
     def __init__(self, node: Node):
         self.root = node
+
+    def print_tree(self):
+        print(f"Głowna osoba w drzewie to {self.root.person}")
+        print(f"Jego ojciec to {self.root.father_node.person}")
+        print(f"Jego matka to {self.root.mother_node.person}")
+        queue = deque()
+        if self.root.father_node.father_node is not None:
+            queue.append((self.root.father_node, self.root.father_node.father_node, "F"))
+        if self.root.father_node.mother_node is not None:
+            queue.append((self.root.father_node, self.root.father_node.mother_node, "M"))
+        if self.root.mother_node.father_node is not None:
+            queue.append((self.root.mother_node, self.root.mother_node.father_node, "F"))
+        if self.root.mother_node.mother_node is not None:
+            queue.append((self.root.mother_node, self.root.mother_node.mother_node, "M"))
+        while len(queue)>0:
+            main_pearson, parent, parent_type = queue.pop()
+            if parent_type == "F":
+                print(f"Ojciec {main_pearson.person} to {parent.person}")
+            else:
+                print(f"Matka {main_pearson.person} to {parent.person}")
+            if parent.father_node is not None:
+                queue.append((parent, parent.father_node, "F"))
+            if parent.mother_node is not None:
+                queue.append((parent, parent.mother_node, "M"))

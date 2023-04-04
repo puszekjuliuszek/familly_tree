@@ -85,6 +85,7 @@ def save_data(root: c.Tree, file_name: str) -> None:
 
 if __name__ == "__main__":
     root = read_data('ZawislakTree.json', 1)
+    root.print_tree()
 
     save_data(root, "Zawislak2.json")
 
