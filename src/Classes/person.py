@@ -65,7 +65,6 @@ class Person:
             "death_date": self.death_date,
         }
 
-    # TODO wypisywanie na konsolę drzewa, weryfikacja czy działa tak jak trzbea
     def print_tree(self):
         print(f"Głowna osoba w drzewie to {self}")
         if self.father is not None:
@@ -92,42 +91,6 @@ class Person:
 
             if parent.father is not None:
                 queue.append((parent, parent.father, "F"))
-            if parent.mother_node is not None:
+            if parent.mother is not None:
                 queue.append((parent, parent.mother, "M"))
 
-# class Node:
-#     def __init__(self, person: Person):
-#         self.person = person
-#         self.mother_node = None
-#         self.father_node = None
-#         self.partner_nodes = []
-#         self.children_nodes = []  # dodałem skierowania na nody dzieci, chyba nam potrzebne
-
-
-# class Tree:
-#     def __init__(self, node: Node):
-#         self.root = node
-#
-#     def print_tree(self):
-#         print(f"Głowna osoba w drzewie to {self.root.person}")
-#         print(f"Jego ojciec to {self.root.father_node.person}")
-#         print(f"Jego matka to {self.root.mother_node.person}")
-#         queue = deque()
-#         if self.root.father_node.father_node is not None:
-#             queue.append((self.root.father_node, self.root.father_node.father_node, "F"))
-#         if self.root.father_node.mother_node is not None:
-#             queue.append((self.root.father_node, self.root.father_node.mother_node, "M"))
-#         if self.root.mother_node.father_node is not None:
-#             queue.append((self.root.mother_node, self.root.mother_node.father_node, "F"))
-#         if self.root.mother_node.mother_node is not None:
-#             queue.append((self.root.mother_node, self.root.mother_node.mother_node, "M"))
-#         while len(queue)>0:
-#             main_pearson, parent, parent_type = queue.pop()
-#             if parent_type == "F":
-#                 print(f"Ojciec {main_pearson.person} to {parent.person}")
-#             else:
-#                 print(f"Matka {main_pearson.person} to {parent.person}")
-#             if parent.father_node is not None:
-#                 queue.append((parent, parent.father_node, "F"))
-#             if parent.mother_node is not None:
-#                 queue.append((parent, parent.mother_node, "M"))

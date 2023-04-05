@@ -54,7 +54,6 @@ def read_data(file_name: str, main_person_id: int) -> person.Person:
 
     json_data.sort(key=lambda x: x["person_id"])
     persons_list = []
-    print(json_data)
     for data_dict in json_data:
         persons_list.append(person.Person(data_dict=data_dict))
 
@@ -80,13 +79,6 @@ def read_data(file_name: str, main_person_id: int) -> person.Person:
 
         if now_person.person_id == main_person_id:
             main_person = now_person
-
-    for p in persons_list:
-        p.print_person()
-        print(p.partners)
-        print()
-    print("end read")
-    print()
 
     return main_person
 
