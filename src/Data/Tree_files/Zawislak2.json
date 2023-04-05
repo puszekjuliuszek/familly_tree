@@ -1,4 +1,14 @@
 [
+   {
+    "person_id": 5,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Tadeusz",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [6]
+  },
   {
     "person_id": 1,
     "father_id": 3,
@@ -7,7 +17,6 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children_id": [],
     "partners_id": []
   },
   {
@@ -18,7 +27,36 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children_id": [],
+    "partners_id": [3]
+  },
+  {
+    "person_id": 8,
+    "father_id": 5,
+    "mother_id": 6,
+    "first_name": "Daniel",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [9]
+  },
+  {
+    "person_id": 9,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Anna",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [8]
+  },
+  {
+    "person_id": 10,
+    "father_id": 8,
+    "mother_id": 9,
+    "first_name": "Julian",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
     "partners_id": []
   },
   {
@@ -29,8 +67,7 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children_id": [],
-    "partners_id": []
+    "partners_id": [4]
   },
   {
     "person_id": 6,
@@ -40,18 +77,17 @@
     "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children_id": [],
-    "partners_id": []
+    "partners_id": [5]
   },
   {
-    "person_id": 5,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Tadeusz",
-    "last_name": "Trawka",
+    "person_id": 7,
+    "father_id": 3,
+    "mother_id": 4,
+    "first_name": "Mikolaj",
+    "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "children_id": [],
     "partners_id": []
   }
+
 ]

@@ -1,93 +1,97 @@
 import json
 import os
-from src.Classes import person as c
+from src.Classes import person
 import queue
 
 
-# szukanie Noda na liscie
-#TODO przebudować wczytywanie i zapisywanie
-def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> c.Node:
+def save_data(start_person: person.Person, file_name: str) -> None:
+    file_path = os.path.join(os.getcwd(), "Tree_files", file_name)
+    Q = queue.Queue()
+    Q.put(start_person)
+    dict_list = []
+    # BFS <3
+    while not Q.empty():
+        now_person = Q.get()
+        if now_person.to_dict() not in dict_list:
+            dict_list.append(now_person.to_dict())
+            if now_person.mother is not None:
+                Q.put(now_person.mother)
+            if now_person.father is not None:
+                Q.put(now_person.father)
+
+            for partner in now_person.partners:
+                Q.put(partner)
+
+            for child in now_person.children:
+                Q.put(child)
+
+    with open(file_path, "w+") as f:
+        json.dump(dict_list, f)
+    return
+
+
+def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> int:
     if r is None:
         r = len(arr) - 1
 
     mid = (l + r) // 2
 
-    if arr[mid].person.person_id == target:
-        return arr[mid]
+    if arr[mid].get("person_id") == target:
+        return mid
 
-    if arr[mid].person.person_id < target:
+    if arr[mid].get("person_id") < target:
         return binary_search(arr, target, mid + 1, r)
     else:
         return binary_search(arr, target, l, mid - 1, )
 
 
-def read_data(file_name: str, main_person_id: int) -> c.Tree:
-    # file name, id of main person, zwaraca obiekt Tree osoby o id równemu main_person_id
+def read_data(file_name: str, main_person_id: int) -> person.Person:
     file_path = os.path.join(os.getcwd(), "Tree_files", file_name)
-    main_tree_root = None
+    main_person = None
 
     with open(file_path) as f:
-        data = json.load(f)
+        json_data = json.load(f)
 
-    Nodes = []
+    json_data.sort(key=lambda x: x["person_id"])
+    persons_list = []
+    print(json_data)
+    for data_dict in json_data:
+        persons_list.append(person.Person(data_dict=data_dict))
 
-    for dict in data:
-        p = c.Person()  # stworzenie osoby
-        p.update_from_dict(dict)
-        n = c.Node(p)  # stworzenie noda z tą osoba
-        Nodes.append(n)
+    for iterator in range(len(json_data)):
+        now_person = persons_list[iterator]
+        father_id = json_data[iterator].get("father_id")
+        mother_id = json_data[iterator].get("mother_id")
+        partners_id = json_data[iterator].get("partners_id")
 
-    Nodes.sort(key=lambda x: x.person.person_id)  # sortowanie po id zeby binary search zadziałał
+        if father_id != 0:
+            mid = binary_search(json_data, father_id)
+            now_person.father = persons_list[mid]
+            persons_list[mid].children.append(now_person)
 
-    # podpinanie nodów do kadego noda po id i tworzenie obiektów drzewa
-    for n in Nodes:
-        if n.person.person_id != 0:
-            if n.person.father_id != 0 and n.person.father_id is not None:
-                n.father_node = binary_search(Nodes, n.person.father_id)
-            if n.person.mother_id != 0 and n.person.mother_id is not None:
-                n.mother_node = binary_search(Nodes, n.person.mother_id)
+        if mother_id != 0:
+            mid = binary_search(json_data, mother_id)
+            now_person.mother = persons_list[mid]
+            persons_list[mid].children.append(now_person)
 
-            for ids in n.person.partners_id:
-                n.partner_nodes.append(binary_search(Nodes, ids))
+        for id in partners_id:
+            mid = binary_search(json_data, id)
+            now_person.partners.append(persons_list[mid])
 
-            for ids in n.person.children_id:
-                n.partner_nodes.append(binary_search(Nodes, ids))
+        if now_person.person_id == main_person_id:
+            main_person = now_person
 
-        root = c.Tree(n)
-        if n.person.person_id == main_person_id:
-            main_tree_root = root
+    for p in persons_list:
+        p.print_person()
+        print(p.partners)
+        print()
+    print("end read")
+    print()
 
-    return main_tree_root
-
-
-def save_data(root: c.Tree, file_name: str) -> None:
-    file_path = os.path.join(os.getcwd(), "Tree_files", file_name)
-    Q = queue.Queue()
-    Q.put(root.root)
-    to_save = []
-    # BFS <3
-    while not Q.empty():
-        node = Q.get()
-        if node.person.to_dict() not in to_save:
-            to_save.append(node.person.to_dict())
-            if node.mother_node is not None:
-                Q.put(node.mother_node)
-            if node.father_node is not None:
-                Q.put(node.father_node)
-            for partner in node.partner_nodes:
-                Q.put(partner)
-            for child in node.children_nodes:
-                Q.put(child)
-
-    with open(file_path, "w+") as f:
-        json.dump(to_save, f)
-    return
+    return main_person
 
 
 if __name__ == "__main__":
-    root = read_data('Zawislak2.json', 1)
-    root.print_tree()
-
-    save_data(root, "Zawislak2.json")
-
-    root2 = read_data("Zawislak2.json", 3)
+    main_person = read_data('Zawislak2.json', 10)
+    main_person.print_tree()
+    save_data(main_person, "Zawislak3.json")
