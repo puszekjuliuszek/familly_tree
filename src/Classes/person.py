@@ -93,4 +93,3 @@ class Person:
                 queue.append((parent, parent.father, "F"))
             if parent.mother is not None:
                 queue.append((parent, parent.mother, "M"))
-

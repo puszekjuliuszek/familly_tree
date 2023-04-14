@@ -2,7 +2,9 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog
 from os import listdir, system
 from shutil import copyfile
 from csv import reader
-from start_window_ui import StartWindowUi
+
+from src.gui.tree_window import TreeWindow
+from src.gui.start_window_ui import StartWindowUi
 from src.io_functions.read_data import read_data
 import sys
 
@@ -51,7 +53,8 @@ class MyWindow(QMainWindow):
     def open_tree_clicked(self):
         if self.ui.tree_to_open is not None:
             main_person = read_data(self.ui.tree_to_open, 10)
-            main_person.print_tree()
+            self.tree_window = TreeWindow(main_person,self.ui.tree_to_open.split(".")[0])
+            self.tree_window.show()
 
 
 def window():

@@ -3,6 +3,9 @@ from functools import partial
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from src.definitions.definitions import ROOT_DIR
+
+
 class StartWindowUi(object):
     def setupUi(self, MainWindow):
         self.tree_to_open = None
@@ -79,7 +82,7 @@ class StartWindowUi(object):
         self.open_tree_bt.setObjectName("open_tree_bt")
         MainWindow.setCentralWidget(self.centralwidget)
 
-        #TODO
+        # TODO
         # self.setStyleSheet("""
         #     #horizontalLayoutWidget {
         #         background-color: "green";
@@ -90,7 +93,7 @@ class StartWindowUi(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Menadżer drzew genealogicznych"))
         self.label.setText(_translate("MainWindow", "MENADŻER\nDRZEW\nGENELOGICZNYCH"))
         self.label_2.setText(_translate("MainWindow", "Przeglądaj zapisane drzewa"))
         self.add_tree_bt.setText(_translate("MainWindow", "Dodaj drzewo"))
@@ -100,7 +103,7 @@ class StartWindowUi(object):
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
         tree_names = []
-        with open("../../resources/saved_trees.csv", "r") as file:
+        with open(ROOT_DIR+ "\\resources\\saved_trees.csv", "r") as file:
             csvreader = reader(file)
             for row in csvreader:
                 tree_names.append(row[1].strip())
@@ -109,6 +112,7 @@ class StartWindowUi(object):
 
     def add_saved_tree(self, tree_name):
         bt_name = "radioButton_" + tree_name
+        # TODO sprawdzanie czy już takiego atrybutu nie ma, bo jak jest to bez sensu duplikować
         setattr(self, bt_name, QtWidgets.QRadioButton(parent=self.verticalLayoutWidget_4))
         attr = getattr(self, bt_name)
         attr.setObjectName(bt_name)
