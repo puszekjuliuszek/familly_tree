@@ -2,8 +2,6 @@ from collections import deque
 
 
 class Person:
-    # TODO wykorzystać __new__, ni umie
-
     def __init__(self, data_dict=None):
         self.person_id = None
         self.father = None

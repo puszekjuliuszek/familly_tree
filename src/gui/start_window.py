@@ -24,7 +24,7 @@ class MyWindow(QMainWindow):
             self.make_copy_of_a_tree(fname[0])
             self.ui.add_saved_trees()
         else:
-            #TODO wywala apke jak nie wybierzesz niczego tylko zamkniesz okno
+            # TODO wywala apke jak nie wybierzesz niczego tylko zamkniesz okno
             pass
 
     @staticmethod
@@ -52,8 +52,9 @@ class MyWindow(QMainWindow):
 
     def open_tree_clicked(self):
         if self.ui.tree_to_open is not None:
-            main_person = read_data(self.ui.tree_to_open, 10)
-            self.tree_window = TreeWindow(main_person,self.ui.tree_to_open.split(".")[0])
+            main_person = read_data(self.ui.tree_to_open, 4)
+            # id 6 to babcia, id 4 mama, id 1 ja, 3grzegorz
+            self.tree_window = TreeWindow(main_person, self.ui.tree_to_open.split(".")[0])
             self.tree_window.show()
 
 
