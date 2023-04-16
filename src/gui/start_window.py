@@ -1,10 +1,11 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QVBoxLayout
 from os import listdir, system
 from shutil import copyfile
 from csv import reader
 
 from src.gui.tree_window import TreeWindow
 from src.gui.start_window_ui import StartWindowUi
+from src.gui.tree_window_graph_ui import TreeWindowGraphUi
 from src.io_functions.read_data import read_data
 import sys
 
@@ -53,9 +54,17 @@ class MyWindow(QMainWindow):
     def open_tree_clicked(self):
         if self.ui.tree_to_open is not None:
             main_person = read_data(self.ui.tree_to_open, 4)
-            # id 6 to babcia, id 4 mama, id 1 ja, 3grzegorz
-            self.tree_window = TreeWindow(main_person, self.ui.tree_to_open.split(".")[0])
-            self.tree_window.show()
+            # # id 6 to babcia, id 4 mama, id 1 ja, 3grzegorz
+            # self.tree_window = TreeWindow(main_person, self.ui.tree_to_open.split(".")[0])
+            # self.tree_window.show()
+
+            graph_ui = TreeWindowGraphUi()
+            canvas = graph_ui.setup_ui(main_person)
+            self.widget = QWidget()
+            layout = QVBoxLayout()
+            layout.addWidget(canvas)
+            self.widget.setLayout(layout)
+            self.widget.show()
 
 
 def window():

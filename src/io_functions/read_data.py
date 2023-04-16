@@ -3,7 +3,7 @@ from src.Classes import person
 from src.definitions.definitions import ROOT_DIR
 
 
-def read_data(file_name: str, main_person_id: int) -> person.Person:
+def read_data(file_name: str , main_person_id: int) -> person.Person:
     file_path = ROOT_DIR+ "\\resources\\Tree_files\\"+file_name
     main_person = None
 
