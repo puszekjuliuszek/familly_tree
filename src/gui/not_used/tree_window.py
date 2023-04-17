@@ -1,6 +1,6 @@
 from PyQt6.QtGui import QPainter, QColor
 from PyQt6.QtWidgets import QWidget
-from src.gui.tree_window_ui import TreeWindowUi
+from src.gui.not_used.tree_window_ui import TreeWindowUi
 
 
 class TreeWindow(QWidget):

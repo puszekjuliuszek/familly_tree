@@ -9,10 +9,10 @@ from src.io_functions.read_data import read_data
 
 
 class TreeWindowGraphUi:
-    def on_node_click(self, event):
-        node_text = event.artist.get_text()
-        node_num = str(node_text)
-        print(f"Kliknięto węzeł {node_num}")
+    # def on_node_click(self, event):
+    #     node_text = event.artist.get_text()
+    #     node_num = str(node_text)
+    #     print(f"Kliknięto węzeł {node_num}")
 
     def setup_ui(self, person):
         G = nx.Graph()
@@ -62,11 +62,10 @@ class TreeWindowGraphUi:
             button = ax.annotate(str(node), xy=pos[node], ha="center", va="center")
             button.set_picker(True)
 
-        fig = plt.gcf()
-        fig.canvas.mpl_connect('pick_event', self.on_node_click)
-        canvas = FigureCanvas(fig)
+        self.fig = plt.gcf()
+        #self.fig.canvas.mpl_connect('pick_event', self.on_node_click)
+        canvas = FigureCanvas(self.fig)
 
-        # TODO podłączyć do wysztkiego
 
 
         return canvas
