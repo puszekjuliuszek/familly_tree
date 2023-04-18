@@ -14,7 +14,7 @@ class TreeWindowUi(object):
         MainWindow.setObjectName("MainWindow")
         width = pow(2,level-1)*COUPLE_WIDTH+(pow(2,level-1)-1)*REGULAR_GAP +MARGIN_CORRECT
         height = 2*MY_MARGIN+(level+1)*PERSON_HEIGHT+level*2*HEIGHT_GAP
-        MainWindow.resize(width,height)
+        MainWindow.resize(int(width),int(height))
 
 
         queue = deque()

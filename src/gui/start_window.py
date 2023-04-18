@@ -1,12 +1,5 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QWidget, QVBoxLayout
-from os import listdir
-from shutil import copyfile
-from csv import reader
-
-from src.gui.not_used.tree_window import TreeWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow
 from src.gui.start_window_ui import StartWindowUi
-from src.gui.tree_window_graph_ui import TreeWindowGraphUi
-from src.io_functions.read_data import read_data
 import sys
 
 

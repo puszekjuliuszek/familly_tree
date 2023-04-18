@@ -2,12 +2,9 @@ from _csv import reader
 from functools import partial
 from os import listdir
 from shutil import copyfile
-
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIntValidator, QFont, QDoubleValidator
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLineEdit, QFormLayout
-
+from PyQt6.QtGui import  QFont
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLineEdit
 from src.definitions.definitions import ROOT_DIR
 from src.gui.not_used.tree_window import TreeWindow
 from src.gui.tree_window_graph_ui import TreeWindowGraphUi
@@ -217,7 +214,7 @@ class StartWindowUi(object):
 
     def open_tree_clicked(self):
         if self.tree_to_open is not None:
-            main_person = read_data(self.tree_to_open, 4)
+            main_person = read_data(self.tree_to_open, 1)
             # id 6 to babcia, id 4 mama, id 1 ja, 3grzegorz
             # TODO wywalić te dwie linijki, albo dołożyć wybór printowania drzewa
             self.tree_window = TreeWindow(main_person, self.tree_to_open.split(".")[0])
@@ -243,11 +240,12 @@ class StartWindowUi(object):
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
 
+        # self.choose_tree_window = ChooseTreeWindow()
+        # self.choose_tree_window.show()
         name_lbl = QtWidgets.QLabel()
         name_lbl.setText("imię:")
         self.verticalLayout_4.addWidget(name_lbl)
         e1 = QLineEdit()
-        e1.setMaxLength(4)
         e1.setFont(QFont("Arial", 12))
         self.verticalLayout_4.addWidget(e1)
 

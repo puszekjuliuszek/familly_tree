@@ -1,0 +1,11 @@
+[
+   {
+    "person_id": 5,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Tadeusz",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": []
+  }]
