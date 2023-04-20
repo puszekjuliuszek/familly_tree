@@ -9,14 +9,14 @@ class MyWindow(QMainWindow):
         self.ui = StartWindowUi()
         self.ui.setupUi(self)
 
-        # self.setStyleSheet("""
-        #     #verticalLayoutWidget_5 {
-        #         background-color: "green";
-        #         color: "white";
-        #     }""")
-
-
-
+        self.setStyleSheet("""QWidget {
+                        background-color: rgba(27,29,35,255);
+                        color: "white";
+                     }
+                     #verticalLayoutWidget_4 {
+                            background-color: rgba(44,49,62,255);
+                            color: "white";
+                        }""")
 
 
 def window():
