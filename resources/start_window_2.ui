@@ -87,98 +87,60 @@ GENELOGICZNYCH</string>
    <widget class="QWidget" name="verticalLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>149</x>
+      <x>439</x>
       <y>79</y>
-      <width>441</width>
+      <width>151</width>
       <height>221</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <widget class="QScrollArea" name="scrollArea">
-       <property name="widgetResizable">
-        <bool>true</bool>
+      <widget class="QRadioButton" name="radioButton_2">
+       <property name="text">
+        <string>RadioButton</string>
        </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>437</width>
-          <height>217</height>
-         </rect>
-        </property>
-        <widget class="QRadioButton" name="radioButton">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>60</y>
-           <width>69</width>
-           <height>15</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>RadioButton</string>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="radioButton_2">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>130</y>
-           <width>69</width>
-           <height>15</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>RadioButton</string>
-         </property>
-        </widget>
-       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton">
+       <property name="text">
+        <string>RadioButton</string>
+       </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="add_tree_bt">
+   <widget class="QWidget" name="verticalLayoutWidget_5">
     <property name="geometry">
      <rect>
-      <x>493</x>
-      <y>270</y>
-      <width>96</width>
-      <height>20</height>
+      <x>149</x>
+      <y>79</y>
+      <width>291</width>
+      <height>221</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Dodaj drzewo</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="open_tree_bt">
-    <property name="geometry">
-     <rect>
-      <x>485</x>
-      <y>240</y>
-      <width>104</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Otwórz drzewo</string>
-    </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_2"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
