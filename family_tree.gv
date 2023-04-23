@@ -1,0 +1,88 @@
+// Family Tree
+digraph {
+	"Maks Zawislak"
+	"Urszula Zawislak"
+	"Grzegorz Zawislak"
+	{
+		rank=same
+		"Grzegorz Zawislak"
+		"Urszula Zawislak"
+		"Grzegorz Zawislak" -> "Urszula Zawislak" [dir=none]
+	}
+	{
+		rank=same
+		"Maks Zawislak"
+		"Mikolaj Zawislak"
+	}
+	"Grzegorz Zawislak" -> "Maks Zawislak"
+	"Grzegorz Zawislak" -> "Mikolaj Zawislak"
+	"Danuta Zawislak"
+	"Bronislaw Zawislak"
+	{
+		rank=same
+		"Bronislaw Zawislak"
+		"Danuta Zawislak"
+		"Bronislaw Zawislak" -> "Danuta Zawislak" [dir=none]
+	}
+	{
+		rank=same
+		"Grzegorz Zawislak"
+	}
+	"Bronislaw Zawislak" -> "Grzegorz Zawislak"
+	{
+		rank=same
+		"Grzegorz Zawislak"
+	}
+	"Danuta Zawislak" -> "Grzegorz Zawislak"
+	"Urszula Zawislak"
+	"Grzegorz Zawislak"
+	{
+		rank=same
+		"Maks Zawislak"
+		"Mikolaj Zawislak"
+	}
+	"Urszula Zawislak" -> "Maks Zawislak"
+	"Urszula Zawislak" -> "Mikolaj Zawislak"
+	"Rozalia Trawka"
+	"Tadeusz Trawka"
+	{
+		rank=same
+		"Tadeusz Trawka"
+		"Rozalia Trawka"
+		"Tadeusz Trawka" -> "Rozalia Trawka" [dir=none]
+	}
+	{
+		rank=same
+		"Urszula Zawislak"
+		"Daniel Trawka"
+	}
+	"Tadeusz Trawka" -> "Urszula Zawislak"
+	"Tadeusz Trawka" -> "Daniel Trawka"
+	{
+		rank=same
+		"Daniel Trawka"
+		"Anna Trawka"
+		"Daniel Trawka" -> "Anna Trawka" [dir=none]
+	}
+	{
+		rank=same
+		"Julian Trawka"
+	}
+	"Daniel Trawka" -> "Julian Trawka"
+	"Rozalia Trawka"
+	"Tadeusz Trawka"
+	"Anna Trawka"
+	"Daniel Trawka"
+	{
+		rank=same
+		"Julian Trawka"
+	}
+	"Anna Trawka" -> "Julian Trawka"
+	{
+		rank=same
+		"Urszula Zawislak"
+		"Daniel Trawka"
+	}
+	"Rozalia Trawka" -> "Urszula Zawislak"
+	"Rozalia Trawka" -> "Daniel Trawka"
+}

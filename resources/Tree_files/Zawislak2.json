@@ -61,8 +61,8 @@
   },
   {
     "person_id": 3,
-    "father_id": 0,
-    "mother_id": 0,
+    "father_id": 12,
+    "mother_id": 11,
     "first_name": "Grzegorz",
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
@@ -88,6 +88,26 @@
     "birth_date": "01-01-2000",
     "death_date": null,
     "partners_id": []
+  },
+  {
+    "person_id": 11,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Danuta",
+    "last_name": "Zawislak",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [12]
+  },
+  {
+    "person_id": 12,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Bronislaw",
+    "last_name": "Zawislak",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [11]
   }
 
 ]

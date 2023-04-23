@@ -1,0 +1,28 @@
+digraph {
+	graph [bgcolor=white dpi=300 margin=0 nodesep=1 rankdir=TB ranksep=1 ratio=auto size="15,10"]
+	"\"Urszula Zawislak\"" -> "\"Maks Zawislak\""
+	"\"Urszula Zawislak\"" -> "\"Mikolaj Zawislak\""
+	"\"Urszula Zawislak\"" -> "\"Grzegorz Zawislak\""
+	"\"Grzegorz Zawislak\"" -> "\"Maks Zawislak\""
+	"\"Grzegorz Zawislak\"" -> "\"Urszula Zawislak\""
+	"\"Grzegorz Zawislak\"" -> "\"Mikolaj Zawislak\""
+	"\"Rozalia Trawka\"" -> "\"Urszula Zawislak\""
+	"\"Rozalia Trawka\"" -> "\"Daniel Trawka\""
+	"\"Rozalia Trawka\"" -> "\"Tadeusz Trawka\""
+	"\"Tadeusz Trawka\"" -> "\"Urszula Zawislak\""
+	"\"Tadeusz Trawka\"" -> "\"Rozalia Trawka\""
+	"\"Tadeusz Trawka\"" -> "\"Daniel Trawka\""
+	"\"Daniel Trawka\"" -> "\"Anna Trawka\""
+	"\"Daniel Trawka\"" -> "\"Julian Trawka\""
+	"\"Anna Trawka\"" -> "\"Julian Trawka\""
+	"\"Anna Trawka\"" -> "\"Daniel Trawka\""
+	"\"Maks Zawislak\"" [label="\"Maks Zawislak\""]
+	"\"Urszula Zawislak\"" [label="\"Urszula Zawislak\""]
+	"\"Grzegorz Zawislak\"" [label="\"Grzegorz Zawislak\""]
+	"\"Mikolaj Zawislak\"" [label="\"Mikolaj Zawislak\""]
+	"\"Rozalia Trawka\"" [label="\"Rozalia Trawka\""]
+	"\"Tadeusz Trawka\"" [label="\"Tadeusz Trawka\""]
+	"\"Daniel Trawka\"" [label="\"Daniel Trawka\""]
+	"\"Anna Trawka\"" [label="\"Anna Trawka\""]
+	"\"Julian Trawka\"" [label="\"Julian Trawka\""]
+}
