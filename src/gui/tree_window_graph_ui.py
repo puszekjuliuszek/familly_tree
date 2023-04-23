@@ -4,6 +4,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from src.Classes.person import Person
+import matplotlib.image as mpimg
+from PIL import Image
+import io
+import numpy as np
 import random
 import pydot
 from networkx.drawing.nx_pydot import graphviz_layout
@@ -21,7 +25,7 @@ from graphviz import Digraph, Source, Graph
 
 
 class TreeWindowGraphUi:
-    def setup_ui(self, person: Person):
+    def setup_ui(self, person: Person) -> FigureCanvas:
         G =Digraph(comment='Family Tree')
 
         # add the root node
@@ -56,7 +60,7 @@ class TreeWindowGraphUi:
                         s.attr(rank='same')
                         s.node(str(person_tmp))
                         s.node(str(person_partner))
-                        s.edge(str(person_tmp), str(person_partner))
+                        s.edge(str(person_tmp), str(person_partner),dir='none')
                         #s.edge(str(person_partner),str(person_tmp))
 
             if person_tmp.children != []:
@@ -90,24 +94,25 @@ class TreeWindowGraphUi:
 
         print("end bfs")
         # render the graph
-        G.render('family_tree1.gv')
-        print("end ernder")
-        Gnet = nx.DiGraph(nx.nx_pydot.read_dot(definitions.ROOT_DIR + '\\family_tree1.gv'))
+        # G.render('family_tree1.gv')
+        # print("end ernder")
+        # Gtmp = nx.DiGraph()
+        # Gtmp.add_node("Gi")
+        print("1")
+        # nx.draw(Gtmp)
 
-
-        nx.draw(Gnet,with_labels=True)
-
+        # fig, ax = plt.subplots()
+        print("2")
+        png_bytes = G.pipe(format='png')
+        img = np.array(Image.open(io.BytesIO(png_bytes)))
+        print("3")
         ax = plt.gca()
+        ax.imshow(img)
         ax.axis('off')
-
-        # for node in G.nodes:
-        #     button = ax.annotate(str(node), xy=pos[node], ha="center", va="center")
-        #     button.set_picker(True)
-        #     # przycisk odpala okieno z person z danymi tej osoby, przyciski do dodania rodziny,
-
+        print("3.5")
         plt.subplots_adjust(hspace=0.5)
-        self.fig = plt.gcf()
-        # self.fig.canvas.mpl_connect('pick_event', self.on_node_click)
-        canvas = FigureCanvas(self.fig)
-
+        fig = plt.gcf()
+        print("3.7")
+        canvas = FigureCanvas(fig)
+        print("4")
         return canvas
