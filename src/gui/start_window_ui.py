@@ -230,7 +230,7 @@ class StartWindowUi(object):
 
     def open_tree_clicked(self):
         if self.tree_to_open is not None:
-            main_person = read_data(self.tree_to_open, 1)
+            main_person = read_data(self.tree_to_open, 6)
             # id 6 to babcia, id 4 mama, id 1 ja, 3grzegorz
             # TODO wywalić te dwie linijki, albo dołożyć wybór printowania drzewa
             self.tree_window = TreeWindow(main_person, self.tree_to_open.split(".")[0])

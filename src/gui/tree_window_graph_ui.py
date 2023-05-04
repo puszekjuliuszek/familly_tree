@@ -27,6 +27,9 @@ from graphviz import Digraph, Source, Graph
 class TreeWindowGraphUi:
     def setup_ui(self, person: Person) -> FigureCanvas:
         G =Digraph(comment='Family Tree')
+        #G.attr(splines='true')
+        # G.attr(overlap='true',concentrate='false',rankdir='TB',newrank='true',splines='true')
+        # G.attr(layout="neato")
 
         # add the root node
         G.node(str(person))
@@ -36,83 +39,94 @@ class TreeWindowGraphUi:
         already_added = set()
         queue = deque()
 
-        level_max = -1 * math.inf
-        level_min = math.inf
 
-        queue.append((person, 0))
+        queue.append(person)
         already_added.add(person)
 
         while len(queue) > 0:
-            person_tmp, level_tmp = queue.pop()
+            person_tmp= queue.pop()
 
-            level_max = max(level_max, level_tmp)
-            level_min = min(level_min, level_tmp)
+
 
             for person_partner in person_tmp.partners:
                 if person_partner not in already_added:
                     already_added.add(person_partner)
-                    queue.append((person_partner, level_tmp))
+                    queue.append(person_partner)
 
 
                 if (str(person_tmp),str(person_partner)) not in partner_edge:
                     partner_edge.append((str(person_partner),str(person_tmp)))
+
                     with G.subgraph() as s:
                         s.attr(rank='same')
-                        s.node(str(person_tmp))
-                        s.node(str(person_partner))
-                        s.edge(str(person_tmp), str(person_partner),dir='none')
-                        #s.edge(str(person_partner),str(person_tmp))
+                        s.node(str(person_tmp),shape='oval')
+                        s.node(str(person_partner), shape='oval')
+                        s.node(str(person_tmp) + str(person_partner), label=' ', shape='point',color='red',**{'width':str(0.08)})  # środkowy
+                        # s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none', constraint = 'true')
+                        # s.edge(str(person_tmp),str(person_tmp)+str(person_partner),dir='none',constraint = 'true')
 
-            if person_tmp.children != []:
-                with G.subgraph() as c:
-                    c.attr(rank='same')
+                        s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none',color='red')
+                        s.edge(str(person_tmp) + str(person_partner), str(person_tmp), dir='none',color='red')
+
+
                     for person_child in person_tmp.children:
-                        c.node(str(person_child))
+
+                        if person_child.father in [person_tmp, person_partner] and person_child.mother in [person_tmp,person_partner]:
+                            G.node(str(person_child),shape='oval')
+                            G.edge(str(person_tmp)+str(person_partner),str(person_child))
 
 
-                for person_child in person_tmp.children:
-                    if person_child not in already_added:
-                        already_added.add(person_child)
-                        queue.append((person_child, level_tmp - 1))
+                            if person_child not in already_added:
+                                already_added.add(person_child)
+                                queue.append(person_child)
 
 
-                    G.edge(str(person_tmp), str(person_child))
+
+
+            # if person_tmp.children != []:
+            #     with G.subgraph() as c:
+            #         c.attr(rank='same')
+            #         for person_child in person_tmp.children:
+            #             c.node(str(person_child),shape='oval')
+            #
+            #
+            #     for person_child in person_tmp.children:
+            #         if person_child not in already_added:
+            #             already_added.add(person_child)
+            #             queue.append((person_child, level_tmp - 1))
+            #
+            #
+            #         G.edge(str(person_tmp)+str(person_tmp.partners[0]), str(person_child))
 
             if person_tmp.mother is not None:
                 if person_tmp.mother not in already_added:
                     already_added.add(person_tmp.mother)
-                    queue.append((person_tmp.mother, level_tmp + 1))
+                    queue.append(person_tmp.mother)
 
-                G.node(str(person_tmp.mother))
+                G.node(str(person_tmp.mother),shape='oval')
 
             if person_tmp.father is not None:
                 if person_tmp.father not in already_added:
                     already_added.add(person_tmp.father)
-                    queue.append((person_tmp.father, level_tmp + 1))
+                    queue.append(person_tmp.father)
 
-                G.node(str(person_tmp.father))
+                G.node(str(person_tmp.father),shape='oval')
 
-        print("end bfs")
-        # render the graph
-        # G.render('family_tree1.gv')
-        # print("end ernder")
-        # Gtmp = nx.DiGraph()
-        # Gtmp.add_node("Gi")
-        print("1")
-        # nx.draw(Gtmp)
 
-        # fig, ax = plt.subplots()
-        print("2")
+
+        # G.render('family_now.gv')
+
+
         png_bytes = G.pipe(format='png')
         img = np.array(Image.open(io.BytesIO(png_bytes)))
-        print("3")
+
         ax = plt.gca()
         ax.imshow(img)
         ax.axis('off')
-        print("3.5")
+
         plt.subplots_adjust(hspace=0.5)
         fig = plt.gcf()
-        print("3.7")
+
         canvas = FigureCanvas(fig)
-        print("4")
+
         return canvas
