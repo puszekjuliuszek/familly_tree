@@ -4,92 +4,129 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from src.Classes.person import Person
+import matplotlib.image as mpimg
+from PIL import Image
+import io
+import numpy as np
 import random
 import pydot
 from networkx.drawing.nx_pydot import graphviz_layout
-import igraph as ig
-
+from graphviz import Digraph
+from src.definitions import definitions
 
 # TODO zamykanie okna powoduje zapis drzewa ?
 
-class TreeWindowGraphUi:
-    # def on_node_click(self, event):
-    #     node_text = event.artist.get_text()
-    #     node_num = str(node_text)
-    #     print(f"Kliknięto węzeł {node_num}")
+from collections import deque
+import random
+import math
+import pydot
 
-    def setup_ui(self, person: Person):
-        G = nx.DiGraph()  # graf skierowany
-        G.add_node(str(person))
+from graphviz import Digraph, Source, Graph
+
+
+class TreeWindowGraphUi:
+    def setup_ui(self, person: Person) -> FigureCanvas:
+        G =Digraph(comment='Family Tree')
+        #G.attr(splines='true')
+        # G.attr(overlap='true',concentrate='false',rankdir='TB',newrank='true',splines='true')
+        # G.attr(layout="neato")
+
+        # add the root node
+        G.node(str(person))
+
+        partner_edge = []
 
         already_added = set()
         queue = deque()
 
-        level = 0
-        level_max = -1 * math.inf
-        level_min = math.inf
-        persons_dict = {}
 
-        queue.append((person, level))
+        queue.append(person)
         already_added.add(person)
 
         while len(queue) > 0:
-            person_tmp, level_tmp = queue.pop()
+            person_tmp= queue.pop()
 
-            # level_max = max(level_max,level_tmp)
-            # level_min = min(level_min,level_tmp)
-            persons_dict[str(person_tmp)] = (random.uniform(0, 1),level_tmp)
+
 
             for person_partner in person_tmp.partners:
                 if person_partner not in already_added:
                     already_added.add(person_partner)
-                    queue.append((person_partner,level_tmp))
-                G.add_node(str(person_partner))
-                G.add_edge(str(person_tmp), str(person_partner))
+                    queue.append(person_partner)
 
-            for person_child in person_tmp.children:
-                if person_child not in already_added:
-                    already_added.add(person_child)
-                    queue.append((person_child,level_tmp-1))
-                G.add_node(str(person_child))
-                G.add_edge(str(person_tmp), str(person_child))
+
+                if (str(person_tmp),str(person_partner)) not in partner_edge:
+                    partner_edge.append((str(person_partner),str(person_tmp)))
+
+                    with G.subgraph() as s:
+                        s.attr(rank='same')
+                        s.node(str(person_tmp),shape='oval')
+                        s.node(str(person_partner), shape='oval')
+                        s.node(str(person_tmp) + str(person_partner), label=' ', shape='point',color='red',**{'width':str(0.08)})  # środkowy
+                        # s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none', constraint = 'true')
+                        # s.edge(str(person_tmp),str(person_tmp)+str(person_partner),dir='none',constraint = 'true')
+
+                        s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none',color='red')
+                        s.edge(str(person_tmp) + str(person_partner), str(person_tmp), dir='none',color='red')
+
+
+                    for person_child in person_tmp.children:
+
+                        if person_child.father in [person_tmp, person_partner] and person_child.mother in [person_tmp,person_partner]:
+                            G.node(str(person_child),shape='oval')
+                            G.edge(str(person_tmp)+str(person_partner),str(person_child))
+
+
+                            if person_child not in already_added:
+                                already_added.add(person_child)
+                                queue.append(person_child)
+
+
+
+
+            # if person_tmp.children != []:
+            #     with G.subgraph() as c:
+            #         c.attr(rank='same')
+            #         for person_child in person_tmp.children:
+            #             c.node(str(person_child),shape='oval')
+            #
+            #
+            #     for person_child in person_tmp.children:
+            #         if person_child not in already_added:
+            #             already_added.add(person_child)
+            #             queue.append((person_child, level_tmp - 1))
+            #
+            #
+            #         G.edge(str(person_tmp)+str(person_tmp.partners[0]), str(person_child))
 
             if person_tmp.mother is not None:
                 if person_tmp.mother not in already_added:
                     already_added.add(person_tmp.mother)
-                    queue.append((person_tmp.mother,level_tmp+1))
-                G.add_node(str(person_tmp.mother))
-                # G.add_edge(str(person_tmp), str(person_tmp.mother))
+                    queue.append(person_tmp.mother)
+
+                G.node(str(person_tmp.mother),shape='oval')
 
             if person_tmp.father is not None:
                 if person_tmp.father not in already_added:
                     already_added.add(person_tmp.father)
-                    queue.append((person_tmp.father,level_tmp+1))
-                G.add_node(str(person_tmp.father))
-                # G.add_edge(str(person_tmp), str(person_tmp.father))
+                    queue.append(person_tmp.father)
 
-        print(persons_dict)
-        print(persons_dict)
-        # pos = nx.spring_layout(G)
-        #pos = graphviz_layout(G, prog="twopi")
-        # https://stackoverflow.com/questions/57512155/how-to-draw-a-tree-more-beautifully-in-networkx
-        pos = persons_dict
+                G.node(str(person_tmp.father),shape='oval')
 
 
-        nx.draw_networkx_nodes(G, pos)
-        nx.draw_networkx_edges(G, pos, arrowstyle='-', arrowsize=20)
+
+        # G.render('family_now.gv')
+
+
+        png_bytes = G.pipe(format='png')
+        img = np.array(Image.open(io.BytesIO(png_bytes)))
 
         ax = plt.gca()
+        ax.imshow(img)
         ax.axis('off')
 
-        for node in G.nodes:
-            button = ax.annotate(str(node), xy=pos[node], ha="center", va="center")
-            button.set_picker(True)
-            # przycisk odpala okieno z person z danymi tej osoby, przyciski do dodania rodziny,
-
         plt.subplots_adjust(hspace=0.5)
-        self.fig = plt.gcf()
-        # self.fig.canvas.mpl_connect('pick_event', self.on_node_click)
-        canvas = FigureCanvas(self.fig)
+        fig = plt.gcf()
+
+        canvas = FigureCanvas(fig)
 
         return canvas

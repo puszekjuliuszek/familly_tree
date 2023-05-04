@@ -61,8 +61,8 @@
   },
   {
     "person_id": 3,
-    "father_id": 0,
-    "mother_id": 0,
+    "father_id": 12,
+    "mother_id": 11,
     "first_name": "Grzegorz",
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
@@ -85,6 +85,57 @@
     "mother_id": 4,
     "first_name": "Mikolaj",
     "last_name": "Zawislak",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": []
+  },
+  {
+    "person_id": 11,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Danuta",
+    "last_name": "Zawislak",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [12]
+  },
+  {
+    "person_id": 12,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Bronislaw",
+    "last_name": "Zawislak",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [11]
+  },
+
+  {
+    "person_id": 13,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Place",
+    "last_name": "Holder1",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [14]
+  },
+  {
+    "person_id": 14,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Place",
+    "last_name": "Holder2",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [13]
+  },
+  {
+    "person_id": 15,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Dorota",
+    "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": null,
     "partners_id": []
