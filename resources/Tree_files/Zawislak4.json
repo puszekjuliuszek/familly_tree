@@ -1,17 +1,5 @@
 [
   {
-    "person_id": 5,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Tadeusz",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      6
-    ]
-  },
-  {
     "person_id": 1,
     "father_id": 3,
     "mother_id": 4,
@@ -19,7 +7,31 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "partners_id": []
+    "partners_id": [],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
+  },
+  {
+    "person_id": 3,
+    "father_id": 12,
+    "mother_id": 11,
+    "first_name": "Grzegorz",
+    "last_name": "Zawislak",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [
+      4
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
   },
   {
     "person_id": 4,
@@ -31,53 +43,31 @@
     "death_date": null,
     "partners_id": [
       3
-    ]
+    ],
+    "gender": 0,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
   },
   {
-    "person_id": 8,
-    "father_id": 5,
-    "mother_id": 6,
-    "first_name": "Daniel",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      9
-    ]
-  },
-  {
-    "person_id": 9,
+    "person_id": 5,
     "father_id": 0,
     "mother_id": 0,
-    "first_name": "Anna",
+    "first_name": "Tadeusz",
     "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": null,
     "partners_id": [
-      8
-    ]
-  },
-  {
-    "person_id": 10,
-    "father_id": 8,
-    "mother_id": 9,
-    "first_name": "Julian",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": []
-  },
-  {
-    "person_id": 3,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Grzegorz",
-    "last_name": "Zawislak",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      4
-    ]
+      6
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
   },
   {
     "person_id": 6,
@@ -89,7 +79,13 @@
     "death_date": null,
     "partners_id": [
       5
-    ]
+    ],
+    "gender": 0,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
   },
   {
     "person_id": 7,
@@ -99,16 +95,64 @@
     "last_name": "Zawislak",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "partners_id": []
+    "partners_id": [],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
   },
   {
-    "person_id": 11,
-    "father_id": 3,
-    "mother_id": 9,
-    "first_name": "fads",
-    "last_name": "adfs",
-    "birth_date": "2000.01.01",
+    "person_id": 8,
+    "father_id": 5,
+    "mother_id": 6,
+    "first_name": "Daniel",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
     "death_date": null,
-    "partners_id": []
+    "partners_id": [
+      9
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
+  },
+  {
+    "person_id": 9,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Anna",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [
+      8
+    ],
+    "gender": 0,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
+  },
+  {
+    "person_id": 10,
+    "father_id": 8,
+    "mother_id": 9,
+    "first_name": "Julian",
+    "last_name": "Trawka",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": null,
+    "illnesses": [],
+    "residences": []
   }
 ]

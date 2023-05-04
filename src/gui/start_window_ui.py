@@ -15,7 +15,7 @@ from src.gui.person_window import PersonWindow
 from src.gui.tree_window_graph_ui import TreeWindowGraphUi
 from src.io_functions.read_data import read_data
 from src.io_functions.read_people import read_people_to_list
-
+from src.Classes import person
 
 class StartWindowUi(object):
     def setupUi(self, MainWindow):
@@ -68,7 +68,7 @@ class StartWindowUi(object):
         self.verticalLayoutWidget_4.setGeometry(QtCore.QRect(X1, Y1, WIN_WIDTH - X1, WIN_HEIGHT - Y1))
         self.verticalLayoutWidget_4.setObjectName("verticalLayoutWidget_4")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_4)
-        self.verticalLayout_4.setContentsMargins(REGULAR_MARGIN, REGULAR_MARGIN, REGULAR_MARGIN,REGULAR_MARGIN)
+        self.verticalLayout_4.setContentsMargins(REGULAR_MARGIN, REGULAR_MARGIN, REGULAR_MARGIN, REGULAR_MARGIN)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
 
         self.verticalLayoutWidget_6 = QtWidgets.QWidget(parent=self.centralwidget)
@@ -380,6 +380,7 @@ class StartWindowUi(object):
         self.verticalLayout_5.setContentsMargins(0, 60, 0, 0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.verticalLayout_3.addWidget(self.verticalLayoutWidget_5)
+
     def add_person_clicked(self):
         self.prepare_background()
         add_person_bt = QtWidgets.QPushButton(parent=self.centralwidget)
@@ -425,15 +426,28 @@ class StartWindowUi(object):
             death_date = self.e4.text()
 
         file_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.tree_to_open
-        dict = {'person_id': 11, 'father_id': father_id, 'mother_id': mother_id,
-                      'first_name': self.e1.text(),
-                      'last_name': self.e2.text(), 'birth_date': self.e3.text(), 'death_date': death_date, 'partners_id': []}
+
 
         with open(file_path, "r+") as f:
             file_data = json.load(f)
+
+        new_id = 1
+        file_data.sort(key=lambda x: x["person_id"])
+        for person_data in file_data:
+            if person_data["person_id"] > new_id:
+                new_id = person_data["person_id"]
+                new_id += 1
+
+        dict = {'person_id': new_id, 'father_id': father_id, 'mother_id': mother_id,
+                'first_name': self.e1.text(),
+                'last_name': self.e2.text(), 'birth_date': self.e3.text(), 'death_date': death_date, 'partners_id': []}
+
+
+
         file_data.append(dict)
+
         with open(file_path, "w+") as f:
-            json.dump(file_data,f)
+            json.dump(file_data, f)
 
 
         print(f"{self.e1.text()} {self.e2.text()} {self.e3.text()} {death_date} {str(father_id)} {str(mother_id)}")
@@ -528,12 +542,12 @@ class StartWindowUi(object):
         choose_tree_bt.clicked.connect(self.import_people_from_tree)
 
     def find_person_in_tree(self):
-        main_person = read_data(self.tree_to_open,1)
+        main_person = read_data(self.tree_to_open, 1)
         output_list = []
         que = deque()
         que.append(main_person)
         visited = set()
-        while(len(que)>0):
+        while (len(que) > 0):
             person_tmp = que.pop()
             if person_tmp.person_id not in visited:
                 if person_tmp.father is not None:
@@ -544,7 +558,7 @@ class StartWindowUi(object):
                     que.append(child)
                 for partner in person_tmp.partners:
                     que.append(partner)
-                #TODO poprawić szukanie ludzi
+                # TODO poprawić szukanie ludzi
                 if person_tmp.first_name == self.e1.text():
                     output_list.append(person_tmp)
                 visited.add(person_tmp.person_id)
@@ -552,6 +566,3 @@ class StartWindowUi(object):
         for person in output_list:
             self.window = PersonWindow(person, self.tree_to_open)
             self.window.show()
-
-
-
