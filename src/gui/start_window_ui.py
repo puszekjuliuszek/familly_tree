@@ -1,5 +1,7 @@
 import json
+import os.path
 from _csv import reader
+from collections import deque
 from functools import partial
 from os import listdir
 from shutil import copyfile
@@ -9,6 +11,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLineEdit, QScrol
 from PyQt6.QtCore import Qt
 from src.definitions.definitions import *
 from src.gui.not_used.tree_window import TreeWindow
+from src.gui.person_window import PersonWindow
 from src.gui.tree_window_graph_ui import TreeWindowGraphUi
 from src.io_functions.read_data import read_data
 from src.io_functions.read_people import read_people_to_list
@@ -77,8 +80,7 @@ class StartWindowUi(object):
 
         MainWindow.setCentralWidget(self.centralwidget)
 
-        self.show_saved_trees = QtWidgets.QPushButton(parent=self.verticalLayoutWidget_2)
-        self.show_saved_trees.setGeometry(QtCore.QRect(0, 0, 40, 40))
+        self.show_saved_trees = QtWidgets.QPushButton()
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(10)
@@ -88,8 +90,7 @@ class StartWindowUi(object):
         self.verticalLayout_2.addWidget(self.show_saved_trees)
         self.show_saved_trees.clicked.connect(self.show_saved_trees_clicked)
 
-        self.add_person = QtWidgets.QPushButton(parent=self.verticalLayoutWidget_3)
-        self.add_person.setGeometry(QtCore.QRect(0, 0, 40, 20))
+        self.add_person = QtWidgets.QPushButton()
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(10)
@@ -98,6 +99,16 @@ class StartWindowUi(object):
         self.add_person.setObjectName("add_person")
         self.verticalLayout_2.addWidget(self.add_person)
         self.add_person.clicked.connect(self.add_person_clicked)
+
+        self.find_person = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.find_person.setFont(font)
+        self.find_person.setAutoDefault(False)
+        self.find_person.setObjectName("find_person")
+        self.verticalLayout_2.addWidget(self.find_person)
+        self.find_person.clicked.connect(self.find_person_clicked)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -108,6 +119,7 @@ class StartWindowUi(object):
         self.label.setText(_translate("MainWindow", "MENADŻER\nDRZEW\nGENELOGICZNYCH"))
         self.show_saved_trees.setText(_translate("MainWindow", "Przeglądaj zapisane drzewa"))
         self.add_person.setText(_translate("MainWindow", "Dodaj osobę"))
+        self.find_person.setText(_translate("MainWindow", "Znajdź osobę"))
 
     def add_saved_trees(self):
         for i in reversed(range(self.verticalLayout_4.count())):
@@ -143,32 +155,31 @@ class StartWindowUi(object):
         self.add_saved_trees()
 
         self.MainWindow.setStyleSheet("""
-                            #show_saved_trees {
+                    #show_saved_trees {
                                 background-color: rgba(44,49,62,255);
                                 color: "white";
                                 border: 2px solid white;
                                 border-color: rgba(44,49,62,255);
-                            }
-                            QWidget {
+                    }
+                    QWidget {
                                 background-color: rgba(27,29,35,255);
                                 color: "white";
-                            }
-                            #verticalLayoutWidget_4 {
+                    }
+                    #verticalLayoutWidget_4 {
                             background-color: rgba(44,49,62,255);
                             color: "white";
-                        }
-                        
+                    }
                     QLabel {
                         background-color: rgba(44,49,62,255);
                         color: "white";
-                     }
-                     QRadioButton {
+                    }
+                    QRadioButton {
                         background-color: rgba(44,49,62,255);
                         color: "white";
                      }
-                     #label{
+                    #label{
                      background-color: rgba(27,29,35,255)
-                     }""")
+                    }""")
 
         self.add_tree_bt = QtWidgets.QPushButton(parent=self.centralwidget)
         self.add_tree_bt.setGeometry(QtCore.QRect(0, 0, 0, 0))
@@ -250,7 +261,7 @@ class StartWindowUi(object):
         node_num = str(node_text)
         print(f"Kliknięto węzeł {node_num}")
 
-    def add_person_clicked(self):
+    def prepare_background(self):
         for i in reversed(range(self.verticalLayout_3.count())):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
@@ -261,50 +272,50 @@ class StartWindowUi(object):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
 
         self.MainWindow.setStyleSheet("""
-                    #add_person {
-                        background-color: rgba(44,49,62,255);
-                        color: "white";
-                        border: 2px solid white;
-                        border-color: rgba(44,49,62,255);
-                    }
-                    QWidget {
-                        background-color: rgba(27,29,35,255);
-                        color: "white";
-                     }
-                     #verticalLayoutWidget_4 {
-                            background-color: rgba(44,49,62,255);
-                            color: "white";
-                        }
-                        #verticalLayoutWidget_6 {
-                            background-color: rgba(44,49,62,255);
-                            color: "white";
-                        }
-                        QWidget {
-                            color: white;
-                        }
-                        QLabel {
-                        background-color: rgba(44,49,62,255);
-                     }
-                     QRadioButton {
-                        background-color: rgba(44,49,62,255);
-                     }
-                     QCheckBox {
-                        background-color: rgba(44,49,62,255);
-                     }
-                     QLineEdit {
-                        background-color: rgba(80,90,120,255);
-                     }
-                     QComboBox {
-                        background-color: rgba(80,90,120,255);
-                     }
-                     QDateEdit {
-                        background-color: rgba(80,90,120,255);
-                     }
-                     #label{
-                     background-color: rgba(27,29,35,255)
-                     }
-                        
-                        """)
+                           #add_person {
+                               background-color: rgba(44,49,62,255);
+                               color: "white";
+                               border: 2px solid white;
+                               border-color: rgba(44,49,62,255);
+                           }
+                           QWidget {
+                               background-color: rgba(27,29,35,255);
+                               color: "white";
+                           }
+                           #verticalLayoutWidget_4 {
+                                   background-color: rgba(44,49,62,255);
+                                   color: "white";
+                           }
+                           #verticalLayoutWidget_6 {
+                                   background-color: rgba(44,49,62,255);
+                                   color: "white";
+                           }
+                           QWidget {
+                                   color: white;
+                           }
+                           QLabel {
+                               background-color: rgba(44,49,62,255);
+                           }
+                           QRadioButton {
+                               background-color: rgba(44,49,62,255);
+                           }
+                           QCheckBox {
+                               background-color: rgba(44,49,62,255);
+                           }
+                           QLineEdit {
+                               background-color: rgba(80,90,120,255);
+                           }
+                           QComboBox {
+                               background-color: rgba(80,90,120,255);
+                           }
+                           QDateEdit {
+                               background-color: rgba(80,90,120,255);
+                           }
+                           #label{
+                            background-color: rgba(27,29,35,255)
+                            }
+
+                               """)
         self.tree_to_open = None
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, WIN_WIDTH - X2, WIN_HEIGHT - Y1)
         self.add_saved_trees()
@@ -315,23 +326,23 @@ class StartWindowUi(object):
         name_lbl.setText("imię:")
         name_lbl.setObjectName("lbl")
         self.verticalLayout_6.addWidget(name_lbl)
-        e1 = QLineEdit(self.verticalLayoutWidget_6)
-        e1.setFont(QFont("Arial", 11))
-        self.verticalLayout_6.addWidget(e1)
+        self.e1 = QLineEdit(self.verticalLayoutWidget_6)
+        self.e1.setFont(QFont("Arial", 11))
+        self.verticalLayout_6.addWidget(self.e1)
 
         surname_lbl = QtWidgets.QLabel()
         surname_lbl.setText("nazwisko:")
         self.verticalLayout_6.addWidget(surname_lbl)
-        e2 = QLineEdit()
-        e2.setFont(QFont("Arial", 11))
-        self.verticalLayout_6.addWidget(e2)
+        self.e2 = QLineEdit()
+        self.e2.setFont(QFont("Arial", 11))
+        self.verticalLayout_6.addWidget(self.e2)
 
         birth_lbl = QtWidgets.QLabel()
         birth_lbl.setText("data urodzenia:")
         self.verticalLayout_6.addWidget(birth_lbl)
-        e3 = QtWidgets.QDateEdit()
-        e3.setFont(QFont("Arial", 11))
-        self.verticalLayout_6.addWidget(e3)
+        self.e3 = QtWidgets.QDateEdit()
+        self.e3.setFont(QFont("Arial", 11))
+        self.verticalLayout_6.addWidget(self.e3)
 
         death_lbl = QtWidgets.QLabel()
         death_lbl.setText("data śmierci:")
@@ -369,7 +380,8 @@ class StartWindowUi(object):
         self.verticalLayout_5.setContentsMargins(0, 60, 0, 0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.verticalLayout_3.addWidget(self.verticalLayoutWidget_5)
-
+    def add_person_clicked(self):
+        self.prepare_background()
         add_person_bt = QtWidgets.QPushButton(parent=self.centralwidget)
         add_person_bt.setGeometry(QtCore.QRect(0, 0, 0, 0))
         font = QtGui.QFont()
@@ -378,7 +390,7 @@ class StartWindowUi(object):
         add_person_bt.setFont(font)
         add_person_bt.setObjectName("add_person_bt")
         self.verticalLayout_6.addWidget(add_person_bt)
-        add_person_bt.clicked.connect(partial(self.enter_person, e1, e2, e3))
+        add_person_bt.clicked.connect(self.enter_person)
 
         choose_tree_bt = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
@@ -398,7 +410,7 @@ class StartWindowUi(object):
         else:
             self.e4.setDisabled(False)
 
-    def enter_person(self, e1, e2, e3):
+    def enter_person(self):
         father_id = 0
         for man in self.man_list:
             if self.e5.currentText() == man[0]:
@@ -414,8 +426,8 @@ class StartWindowUi(object):
 
         file_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.tree_to_open
         dict = {'person_id': 11, 'father_id': father_id, 'mother_id': mother_id,
-                      'first_name': e1.text(),
-                      'last_name': e2.text(), 'birth_date': e3.text(), 'death_date': death_date, 'partners_id': []}
+                      'first_name': self.e1.text(),
+                      'last_name': self.e2.text(), 'birth_date': self.e3.text(), 'death_date': death_date, 'partners_id': []}
 
         with open(file_path, "r+") as f:
             file_data = json.load(f)
@@ -424,7 +436,7 @@ class StartWindowUi(object):
             json.dump(file_data,f)
 
 
-        print(f"{e1.text()} {e2.text()} {e3.text()} {death_date} {str(father_id)} {str(mother_id)}")
+        print(f"{self.e1.text()} {self.e2.text()} {self.e3.text()} {death_date} {str(father_id)} {str(mother_id)}")
 
     def import_people_from_tree(self):
         if self.tree_to_open is not None:
@@ -445,3 +457,101 @@ class StartWindowUi(object):
             self.e5.addItem(person[0])
         for person in self.woman_list:
             self.e6.addItem(person[0])
+
+    def find_person_clicked(self):
+        self.prepare_background()
+        self.MainWindow.setStyleSheet("""
+                            #find_person {
+                                background-color: rgba(44,49,62,255);
+                                color: "white";
+                                border: 2px solid white;
+                                border-color: rgba(44,49,62,255);
+                            }
+                            QWidget {
+                                background-color: rgba(27,29,35,255);
+                                color: "white";
+                            }
+                            #verticalLayoutWidget_4 {
+                                    background-color: rgba(44,49,62,255);
+                                    color: "white";
+                            }
+                            #verticalLayoutWidget_6 {
+                                    background-color: rgba(44,49,62,255);
+                                    color: "white";
+                            }
+                            QWidget {
+                                    color: white;
+                            }
+                            QLabel {
+                                background-color: rgba(44,49,62,255);
+                            }
+                            QRadioButton {
+                                background-color: rgba(44,49,62,255);
+                            }
+                            QCheckBox {
+                                background-color: rgba(44,49,62,255);
+                            }
+                            QLineEdit {
+                                background-color: rgba(80,90,120,255);
+                            }
+                            QComboBox {
+                                background-color: rgba(80,90,120,255);
+                            }
+                            QDateEdit {
+                                background-color: rgba(80,90,120,255);
+                            }
+                            #label{
+                             background-color: rgba(27,29,35,255)
+                             }
+
+                                """)
+
+        add_person_bt = QtWidgets.QPushButton(parent=self.centralwidget)
+        add_person_bt.setGeometry(QtCore.QRect(0, 0, 0, 0))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        add_person_bt.setFont(font)
+        add_person_bt.setObjectName("find_person_bt")
+        self.verticalLayout_6.addWidget(add_person_bt)
+        add_person_bt.clicked.connect(self.find_person_in_tree)
+        add_person_bt.setText("szukaj taką osobę")
+
+        choose_tree_bt = QtWidgets.QPushButton(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        choose_tree_bt.setFont(font)
+        choose_tree_bt.setObjectName("choose_tree_bt")
+        choose_tree_bt.setText("w tym drzewie szukaj")
+        self.verticalLayout_4.addWidget(choose_tree_bt)
+        choose_tree_bt.clicked.connect(self.import_people_from_tree)
+
+    def find_person_in_tree(self):
+        main_person = read_data(self.tree_to_open,1)
+        output_list = []
+        que = deque()
+        que.append(main_person)
+        visited = set()
+        while(len(que)>0):
+            person_tmp = que.pop()
+            if person_tmp.person_id not in visited:
+                if person_tmp.father is not None:
+                    que.append(main_person.father)
+                if person_tmp.mother is not None:
+                    que.append(main_person.mother)
+                for child in person_tmp.children:
+                    que.append(child)
+                for partner in person_tmp.partners:
+                    que.append(partner)
+                #TODO poprawić szukanie ludzi
+                if person_tmp.first_name == self.e1.text():
+                    output_list.append(person_tmp)
+                visited.add(person_tmp.person_id)
+
+        for person in output_list:
+            self.window = PersonWindow(person, self.tree_to_open)
+            self.window.show()
+
+
+
