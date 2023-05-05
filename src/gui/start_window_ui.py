@@ -443,7 +443,6 @@ class StartWindowUi(object):
                 'last_name': self.e2.text(), 'birth_date': self.e3.text(), 'death_date': death_date, 'partners_id': []}
 
 
-
         file_data.append(dict)
 
         with open(file_path, "w+") as f:

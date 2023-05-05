@@ -3,8 +3,8 @@ from src.Classes import person
 from src.definitions.definitions import ROOT_DIR
 
 
-def read_data(file_name: str , main_person_id: int) -> person.Person:
-    file_path = ROOT_DIR+ "\\resources\\Tree_files\\"+file_name
+def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> person.Person:
+    file_path = ROOT_DIR + "\\resources\\Tree_files\\" + file_name
     main_person = None
 
     with open(file_path) as f:
@@ -37,6 +37,9 @@ def read_data(file_name: str , main_person_id: int) -> person.Person:
 
         if now_person.person_id == main_person_id:
             main_person = now_person
+
+    if flag:
+        return main_person, persons_list
 
     return main_person
 
