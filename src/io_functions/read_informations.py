@@ -23,7 +23,7 @@ def read_informations(file_name: str, given_id):
     if given_id is []:
         return []
 
-    file_path = ROOT_DIR + "\\resources\\informations\\" + file_name
+    file_path = ROOT_DIR + "\\resources\\information\\" + file_name
 
     with open(file_path) as f:
         json_data = json.load(f)

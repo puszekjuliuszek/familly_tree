@@ -3,8 +3,8 @@ from src.Classes import person
 from src.definitions.definitions import ROOT_DIR
 
 
-def read_data(file_name: str , main_person_id: int) -> person.Person:
-    file_path = ROOT_DIR+ "\\resources\\Tree_files\\"+file_name
+def read_data(file_name: str, main_person_id: int) -> person.Person:
+    file_path = ROOT_DIR + "\\resources\\Tree_files\\" + file_name
     main_person = None
 
     with open(file_path) as f:
@@ -31,8 +31,8 @@ def read_data(file_name: str , main_person_id: int) -> person.Person:
             now_person.mother = persons_list[mid]
             persons_list[mid].children.append(now_person)
 
-        for id in partners_id:
-            mid = binary_search(json_data, id)
+        for index in partners_id:
+            mid = binary_search(json_data, index)
             now_person.partners.append(persons_list[mid])
 
         if now_person.person_id == main_person_id:
@@ -41,16 +41,16 @@ def read_data(file_name: str , main_person_id: int) -> person.Person:
     return main_person
 
 
-def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> int:
-    if r is None:
-        r = len(arr) - 1
+def binary_search(arr: list, target: int, left: int = 0, right: int = None) -> int:
+    if right is None:
+        right = len(arr) - 1
 
-    mid = (l + r) // 2
+    mid = (left + right) // 2
 
     if arr[mid].get("person_id") == target:
         return mid
 
     if arr[mid].get("person_id") < target:
-        return binary_search(arr, target, mid + 1, r)
+        return binary_search(arr, target, mid + 1, right)
     else:
-        return binary_search(arr, target, l, mid - 1, )
+        return binary_search(arr, target, left, mid - 1, )
