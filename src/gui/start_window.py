@@ -7,7 +7,7 @@ class MyWindow(QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         self.ui = StartWindowUi()
-        self.ui.setupUi(self)
+        self.ui.setup_ui(self)
 
         self.setStyleSheet("""QWidget {
                         background-color: rgba(27,29,35,255);

@@ -36,7 +36,8 @@ class Person:
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def get_id_list(self, ref_list: list) -> list:
+    @staticmethod
+    def get_id_list(ref_list: list) -> list:
         return_list = []
         for person in ref_list:
             return_list.append(person.person_id)
@@ -66,8 +67,6 @@ class Person:
         print(f"Residences: {RI.read_informations('cities.json', self.residences)}")
         print(f"Profession: {RI.read_informations('professions.json',self.profession)}")
         print(f"Illnesses: {RI.read_informations('illnesses.json',self.illnesses)}")
-
-
 
     def to_dict(self) -> dict:
         if self.father is None:
