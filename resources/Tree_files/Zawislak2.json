@@ -13,7 +13,10 @@
     "birth_place": 1,
     "profession": 1,
     "illnesses": [],
-    "residences": [1,2]
+    "residences": [
+      1,
+      2
+    ]
   },
   {
     "person_id": 3,
@@ -101,7 +104,10 @@
     "birth_place": 1,
     "profession": null,
     "illnesses": [],
-    "residences": [1,3]
+    "residences": [
+      1,
+      3
+    ]
   },
   {
     "person_id": 8,
@@ -170,7 +176,9 @@
     "death_reason": 1,
     "birth_place": null,
     "profession": null,
-    "illnesses": [1],
+    "illnesses": [
+      1
+    ],
     "residences": []
   },
   {
@@ -188,23 +196,11 @@
     "death_reason": 2,
     "birth_place": null,
     "profession": null,
-    "illnesses": [4,2],
-    "residences": []
-  },
-  {
-    "person_id": 15,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Dorota",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [],
-    "gender": 0,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": null,
-    "illnesses": [],
+    "illnesses": [
+      4,
+      2
+    ],
     "residences": []
   }
+
 ]

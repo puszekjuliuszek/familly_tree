@@ -590,6 +590,7 @@ class StartWindowUi(object):
                                   'gender': 1, 'death_reason': None, 'birth_place': 1, 'profession': 1, 'illnesses': [],
                                   'residences': [1, 2]}
 
+
         file_data.append(person_data_dictionary)
 
         with open(file_path, "w+") as f:
