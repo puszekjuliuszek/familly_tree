@@ -1,6 +1,7 @@
 import json
 from src.Classes import person
 from src.definitions.definitions import ROOT_DIR
+from src.io_functions import delete_json as DJ
 
 
 def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> person.Person:
@@ -13,7 +14,7 @@ def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> pe
     json_data.sort(key=lambda x: x["person_id"])
     persons_list = []
     for data_dict in json_data:
-        persons_list.append(person.Person(data_dict=data_dict))
+        persons_list.append(person.Person(DJ.delete_json(file_name),data_dict=data_dict))
 
     for iterator in range(len(json_data)):
         now_person = persons_list[iterator]

@@ -45,3 +45,4 @@ def read_informations(file_name: str, given_id):
         dict = json_data[index]
         name = dict['name']
         return name
+

@@ -117,6 +117,10 @@ class TreeWindowGraphUi:
             elem.print_person()
             print()
 
+        print('hi')
+        for elem in already_added:
+            print(elem.to_dict())
+
         # G.render('family_now.gv')
 
 

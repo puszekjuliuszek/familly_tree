@@ -2,7 +2,7 @@ import json
 
 from src.definitions.definitions import ROOT_DIR
 
-
+#TODO, mozna poprawic bo juz mamy plec w klasie Person
 def read_people_to_list(file_name: str):
     file_path = ROOT_DIR + "\\resources\\Tree_files\\" + file_name
 
