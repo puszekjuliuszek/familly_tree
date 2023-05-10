@@ -113,13 +113,13 @@ class TreeWindowGraphUi:
                 G.node(str(person_tmp.father),shape='oval')
 
 
-        for elem in already_added:
-            elem.print_person()
-            print()
-
-        print('hi')
-        for elem in already_added:
-            print(elem.to_dict())
+        # for elem in already_added:
+        #     elem.print_person()
+        #     print()
+        #
+        # print('hi')
+        # for elem in already_added:
+        #     print(elem.to_dict())
 
         # G.render('family_now.gv')
 
