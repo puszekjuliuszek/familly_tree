@@ -2,9 +2,6 @@ from src.io_functions import read_data as RD
 from src.Classes import person
 import queue
 
-# TODO poszukac sposobu rozróżniania zależności krwi,
-# liczyc ile do gory/dol bylo ruchów oraz ile w prawo lewo
-# (prawo lewo -> żona, mąż)
 
 from enum import Enum
 
@@ -95,7 +92,7 @@ def get_relation_array(path: list):
     return relation_array
 
 
-def find_family_relation(personFrom:person.Person,personTo:person.Person):
+def find_family_relation(personFrom:person.Person,personTo:person.Person) -> str:
 
     path_between = BFS(personFrom,personTo)
     relation_array = get_relation_array(path_between)
@@ -107,9 +104,11 @@ def find_family_relation(personFrom:person.Person,personTo:person.Person):
         print(relation_type)
 
 
-main_person, person_list = RD.read_data("Zawislak2.json", flag=True)
-print("From read:")
-for p in range(len(person_list)):
-    print(p, ":", person_list[p])
-print("Start:")
-find_family_relation(person_list[1], person_list[7])
+if __name__ == "__main__":
+
+    main_person, person_list = RD.read_data("Zawislak2.json", flag=True)
+    print("From read:")
+    for p in range(len(person_list)):
+        print(p, ":", person_list[p])
+    print("Start:")
+    find_family_relation(person_list[1], person_list[7])
