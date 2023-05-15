@@ -1,6 +1,6 @@
 import sys
 import typing
-from PyQt6.QtGui import QStandardItem
+from PyQt6.QtGui import QStandardItem, QFont
 from PyQt6.QtCore import QEvent, Qt, QObject
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
 
@@ -11,7 +11,7 @@ class CheckableComboBox(QComboBox):
         self.setEditable(True)
         self.lineEdit().setReadOnly(True)
         self.closeOnLineEditClick = False
-
+        self.lineEdit().setFont(QFont("Arial", 11))
         self.lineEdit().installEventFilter(self)
         self.view().viewport().installEventFilter(self)
         self.model().dataChanged.connect(self.update_line_edit_field)
@@ -58,6 +58,14 @@ class CheckableComboBox(QComboBox):
         item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsUserCheckable)
         item.setData(Qt.CheckState.Unchecked, Qt.ItemDataRole.CheckStateRole)
         self.model().appendRow(item)
+
+    def set_items(self, item_list):
+        placeholder_text = ", ".join(item_list)
+        self.lineEdit().setText(placeholder_text)
+        for i in range(self.count()):
+            item = self.model().item(i)
+            if item.text() in item_list:
+                item.setCheckState(Qt.CheckState.Checked)
 
     def update_line_edit_field(self):
         text_container = []

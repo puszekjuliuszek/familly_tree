@@ -92,7 +92,7 @@ def get_relation_array(path: list):
     return relation_array
 
 
-def find_family_relation(personFrom:person.Person,personTo:person.Person) -> str:
+def find_family_relation(personFrom: person.Person, personTo: person.Person) -> str:
 
     path_between = BFS(personFrom,personTo)
     relation_array = get_relation_array(path_between)

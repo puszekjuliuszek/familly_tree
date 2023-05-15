@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Diabetes"
+  },
+  {
+    "id": 2,
+    "name": "Lung cancer"
+  },
+  {
+    "id": 3,
+    "name": "Leukemia"
+  },
+  {
+    "id": 4,
+    "name": "Deafness"
+  }
+]
