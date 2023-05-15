@@ -611,14 +611,14 @@ class StartWindowUi(object):
         self.person_to_edit_father_id = 0
         if self.e5.currentText() != '':
             self.person_to_edit_father_id = self.people_dict.get(self.e5.currentText())
-        elif self.e5.placeholderText() != '':
+        elif self.e5.placeholderText() != ' ':
             self.person_to_edit_father_id = self.people_dict.get(self.e5.placeholderText())
 
         # mother
         self.person_to_edit_mother_id = 0
         if self.e6.currentText() != '':
             self.person_to_edit_mother_id = self.people_dict.get(self.e6.currentText())
-        elif self.e6.placeholderText() != '':
+        elif self.e6.placeholderText() != ' ':
             self.person_to_edit_mother_id = self.people_dict.get(self.e6.placeholderText())
 
         # birthdate
@@ -633,7 +633,7 @@ class StartWindowUi(object):
             self.person_to_edit_death_reason = None
             if self.e10.currentText() != '':
                 self.person_to_edit_death_reason = self.death_reasons_dicts.get(self.e10.currentText())
-            elif self.e10.placeholderText() != '':
+            elif self.e10.placeholderText() != ' ':
                 self.person_to_edit_death_reason = self.death_reasons_dicts.get(self.e10.placeholderText())
 
         # partners
@@ -651,7 +651,7 @@ class StartWindowUi(object):
         self.person_to_edit_birth_place = None
         if self.e11.currentText() != '':
             self.person_to_edit_birth_place = self.places_dicts.get(self.e11.currentText())
-        elif self.e11.placeholderText() != '':
+        elif self.e11.placeholderText() != ' ':
             self.person_to_edit_birth_place = self.places_dicts.get(self.e11.placeholderText())
 
         # professions
@@ -668,6 +668,15 @@ class StartWindowUi(object):
         self.person_to_edit_residences = []
         for residence in self.e14.currentText().split(", "):
             self.person_to_edit_residences.append(self.places_dicts.get(residence))
+
+        if len(self.person_to_edit_professions) == 1 and self.person_to_edit_professions[0] is None:
+            self.person_to_edit_professions = []
+        if len(self.person_to_edit_illnesses) == 1 and self.person_to_edit_illnesses[0] is None:
+            self.person_to_edit_illnesses = []
+        if len(self.person_to_edit_residences) == 1 and self.person_to_edit_residences[0] is None:
+            self.person_to_edit_residences = []
+        if len(self.person_to_edit_partners) == 1 and self.person_to_edit_partners[0] is None:
+            self.person_to_edit_partners = []
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 2 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def add_person_clicked(self) -> None:
@@ -970,15 +979,24 @@ class StartWindowUi(object):
             self.e4.setDisabled(False)
             self.e10.setPlaceholderText(self.person_to_edit.death_reason)
         self.e5.setDisabled(False)
-        self.e5.setPlaceholderText(f"{self.person_to_edit.father.first_name} {self.person_to_edit.father.last_name}")
+        if self.person_to_edit.father is not None:
+            self.e5.setPlaceholderText(f"{self.person_to_edit.father.first_name} {self.person_to_edit.father.last_name}")
+        else:
+            self.e5.setPlaceholderText(" ")
         self.e6.setDisabled(False)
-        self.e6.setPlaceholderText(f"{self.person_to_edit.mother.first_name} {self.person_to_edit.mother.last_name}")
+        if self.person_to_edit.mother is not None:
+            self.e6.setPlaceholderText(f"{self.person_to_edit.mother.first_name} {self.person_to_edit.mother.last_name}")
+        else:
+            self.e6.setPlaceholderText(" ")
         self.e9.setDisabled(False)
         self.e9.setPlaceholderText("Mężczyzna" if self.person_to_edit.gender == 1 else "Kobieta")
         self.e8.setDisabled(False)
         self.e10.setDisabled(False)
         self.e11.setDisabled(False)
-        self.e11.setPlaceholderText(self.person_to_edit.birth_place)
+        if self.person_to_edit.birth_place is not None:
+            self.e11.setPlaceholderText(self.person_to_edit.birth_place)
+        else:
+            self.e11.setPlaceholderText(" ")
         self.e12.setDisabled(False)
         self.e13.setDisabled(False)
         self.e14.setDisabled(False)
@@ -1356,12 +1374,8 @@ class StartWindowUi(object):
         second_person = self.e6.currentText()
         first_id = self.people_dict.get(first_person)
         second_id = self.people_dict.get(second_person)
-        # TODO Jak najsensowniej skorzystać z tej metody?
-        # first_person = read_data(self.tree_to_open, first_id)
-        # TODO czytac nazwe drzewa poprawnie, nie hardcodowac Zawislak2.json
-        text_to_show = find_family_relation(first_id,second_id,"Zawislak2.json")
-        print(text_to_show)
-        # self.error_label.setText(text_to_show)
+        text_to_show = find_family_relation(first_id, second_id, self.tree_to_open)
+        self.error_label.setText(text_to_show)
 
     def chose_tree_to_find_relation_clicked(self):
         self.tree_to_open = self.trees.currentText()
