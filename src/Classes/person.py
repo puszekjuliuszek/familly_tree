@@ -34,6 +34,7 @@ class Person:
                                                      data_dict.get('death_reason'))
             self.birth_place = RI.read_informations(f'{self.tree_name}\\cities.json', data_dict.get('birth_place'))
             self.profession = RI.read_informations(f'{self.tree_name}\\professions.json', data_dict.get('profession'))
+            # TODO nie działa jak illnesses puste
             self.illnesses = RI.read_informations(f'{self.tree_name}\\illnesses.json', data_dict.get('illnesses'))
             self.residences = RI.read_informations(f'{self.tree_name}\\cities.json', data_dict.get('residences'))
 

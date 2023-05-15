@@ -2,7 +2,6 @@ from src.io_functions import read_data as RD
 from src.Classes import person
 import queue
 
-
 from enum import Enum
 
 
@@ -19,17 +18,17 @@ class Relations(Enum):
     INLAWS = ([[1, 1, 1]], ("Mother-in-law", "Father-in-law"))
 
     @classmethod
-    def get_relation(cls, value: list, personTo: person.Person) -> (bool,str):
+    def get_relation(cls, value: list, personTo: person.Person) -> (bool, str):
         for relation_type in cls:
             for relation_array in relation_type.value[0]:
                 if value == relation_array:
                     return True, relation_type.value[1][personTo.gender]
-        return False ,"[Error] Cannot find family relation between this person"
+        return False, "[Error] Cannot find family relation between this people"
 
 
 def BFS(personFirst: person.Person, personSecond: person.Person = None):
-    print("From: ", personFirst)
-    print("To: ", personSecond)
+    # print("From: ", personFirst)
+    # print("To: ", personSecond)
 
     visited = set()
     graph_path = {personFirst: None}
@@ -92,23 +91,33 @@ def get_relation_array(path: list):
     return relation_array
 
 
-def find_family_relation(personFrom:person.Person,personTo:person.Person) -> str:
+def find_family_relation(personFrom_id: int, personTo_id: int, file_name: str) -> str:
 
-    path_between = BFS(personFrom,personTo)
+    if personTo_id == personFrom_id:
+        return "Received same person on both sides!"
+
+    personFrom, personTo = RD.read_data(file_name, personFrom_id, personTo_id, True)
+
+
+    if personFrom is None or personTo is None:
+        return "Something went wrong during finding people in tree"
+
+    path_between = BFS(personFrom, personTo)
     relation_array = get_relation_array(path_between)
-    relation_found,relation_type = Relations.get_relation(relation_array,personTo)
+    relation_found, relation_type = Relations.get_relation(relation_array, personTo)
 
     if relation_found:
-        print(f'{personTo} is {relation_type.lower()} to {personFrom}')
+        return f'{personTo} is {relation_type.lower()} to {personFrom}'
     else:
-        print(relation_type)
+        return relation_type
 
 
 if __name__ == "__main__":
+    find_family_relation(1, 5, "Zawislak2.json")
 
-    main_person, person_list = RD.read_data("Zawislak2.json", flag=True)
-    print("From read:")
-    for p in range(len(person_list)):
-        print(p, ":", person_list[p])
-    print("Start:")
-    find_family_relation(person_list[1], person_list[7])
+    # main_person, person_list = RD.read_data("Zawislak2.json", flag=True)
+    # print("From read:")
+    # for p in range(len(person_list)):
+    #     print(p, ":", person_list[p])
+    # print("Start:")
+    # find_family_relation(person_list[1], person_list[7])

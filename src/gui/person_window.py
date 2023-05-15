@@ -138,13 +138,36 @@ class PersonWindow(QWidget):
         self.label.setText(f"Imię: {self.person.first_name}")
         self.label_2.setText(f"Nazwisko: {self.person.last_name}")
         self.label_3.setText(f"Data urodzenia: {self.person.birth_date}")
-        self.label_4.setText(f"Data śmierci: {self.person.death_date}")
-        self.label_5.setText(f"Matka: {self.person.mother.first_name} {self.person.mother.last_name}")
-        self.label_6.setText(f"Ojciec: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_7.setText(f"Partner: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_8.setText(f"Płeć: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_9.setText(f"Przyczyna śmierci: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_10.setText(f"Miejsce urodzenia: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_11.setText(f"Choroby: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_12.setText(f"Zawód: {self.person.father.first_name} {self.person.father.last_name}")
-        self.label_13.setText(f"Miejsca zamieszkania: {self.person.father.first_name} {self.person.father.last_name}")
+        if self.person.death_date is None:
+            death_date = " "
+        else:
+            death_date = self.person.death_date
+        self.label_4.setText(f"Data śmierci: {death_date}")
+        if self.person.mother is not None:
+            self.label_5.setText(f"Matka: {self.person.mother.first_name} {self.person.mother.last_name}")
+        if self.person.father is not None:
+            self.label_6.setText(f"Ojciec: {self.person.father.first_name} {self.person.father.last_name}")
+        partners = ",".join([str(person) for person in self.person.partners])
+        self.label_7.setText(f"Partnerzy: {partners}")
+        if self.person.gender == 1:
+            gender = "Mężczyzna"
+        else:
+            gender = "Kobieta"
+        self.label_8.setText(f"Płeć: {gender}")
+        if self.person.death_reason is None:
+            death_reason = " "
+        else:
+            death_reason = self.person.death_reason
+        self.label_9.setText(f"Przyczyna śmierci: {death_reason}")
+        if self.person.birth_place is None:
+            birth_place = " "
+        else:
+            birth_place = self.person.birth_place
+        self.label_10.setText(f"Miejsce urodzenia: {birth_place}")
+        illnesses = ",".join(self.person.illnesses)
+        self.label_11.setText(f"Choroby: {illnesses}")
+        # TODO zawody źle się wczytują w Personie jak jest tylko jeden zawód
+        professions = ",".join(self.person.profession)
+        self.label_12.setText(f"Zawody: {professions}")
+        residences = ",".join(self.person.residences)
+        self.label_13.setText(f"Miejsca zamieszkania: {residences}")

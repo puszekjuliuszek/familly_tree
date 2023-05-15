@@ -30,7 +30,6 @@ class TreeWindowGraphUi:
         #G.attr(splines='true')
         # G.attr(overlap='true',concentrate='false',rankdir='TB',newrank='true',splines='true')
         # G.attr(layout="neato")
-
         # add the root node
         G.node(str(person))
 

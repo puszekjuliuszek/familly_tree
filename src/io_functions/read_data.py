@@ -4,9 +4,10 @@ from src.definitions.definitions import ROOT_DIR
 from src.io_functions import delete_json as DJ
 
 
-def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> person.Person:
+def read_data(file_name: str, main_person_id: int = 1, personTo_id: int = -1, flag: bool = False) -> person.Person:
     file_path = ROOT_DIR + "\\resources\\Tree_files\\" + file_name
     main_person = None
+    personTo = None
 
     with open(file_path) as f:
         json_data = json.load(f)
@@ -14,7 +15,7 @@ def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> pe
     json_data.sort(key=lambda x: x["person_id"])
     persons_list = []
     for data_dict in json_data:
-        persons_list.append(person.Person(DJ.delete_json(file_name),data_dict=data_dict))
+        persons_list.append(person.Person(DJ.delete_json(file_name), data_dict=data_dict))
 
     for iterator in range(len(json_data)):
         now_person = persons_list[iterator]
@@ -38,6 +39,14 @@ def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> pe
 
         if now_person.person_id == main_person_id:
             main_person = now_person
+        if now_person.person_id == personTo_id and personTo_id != -1:
+            personTo = now_person
+
+    if personTo_id != -1:
+        return main_person, personTo
+
+    if main_person is None:
+        main_person = persons_list[0]
 
     if flag:
         return main_person, persons_list
