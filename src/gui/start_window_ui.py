@@ -1358,7 +1358,9 @@ class StartWindowUi(object):
         second_id = self.people_dict.get(second_person)
         # TODO Jak najsensowniej skorzystać z tej metody?
         # first_person = read_data(self.tree_to_open, first_id)
-        # text_to_show = find_family_relation(????)
+        # TODO czytac nazwe drzewa poprawnie, nie hardcodowac Zawislak2.json
+        text_to_show = find_family_relation(first_id,second_id,"Zawislak2.json")
+        print(text_to_show)
         # self.error_label.setText(text_to_show)
 
     def chose_tree_to_find_relation_clicked(self):
