@@ -39,6 +39,9 @@ def read_data(file_name: str, main_person_id: int = 1, flag: bool = False) -> pe
         if now_person.person_id == main_person_id:
             main_person = now_person
 
+    if main_person is None:
+        main_person = persons_list[0]
+
     if flag:
         return main_person, persons_list
 

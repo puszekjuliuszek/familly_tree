@@ -1,1 +1,23 @@
-[{"person_id": 1, "father_id": null, "mother_id": null, "first_name": "Juliusz", "last_name": "Wasieleski", "birth_date": "13-07-2002", "death_date": null, "partners_id": [null], "gender": 1, "death_reason": null, "birth_place": 1, "profession": [1], "illnesses": [null], "residences": [null]}]
+[
+  {
+    "person_id": 1,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Juliusz",
+    "last_name": "Wasieleski",
+    "birth_date": "13-07-2002",
+    "death_date": null,
+    "partners_id": [
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": 1,
+    "profession": [
+      1
+    ],
+    "illnesses": [
+    ],
+    "residences": [
+    ]
+  }
+]
