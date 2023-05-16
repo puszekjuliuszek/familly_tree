@@ -60,24 +60,6 @@
     "residences": []
   },
   {
-    "person_id": 5,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Tadeusz",
-    "last_name": "Trawka",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      6
-    ],
-    "gender": 1,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": []
-  },
-  {
     "person_id": 6,
     "father_id": 0,
     "mother_id": 0,
@@ -241,5 +223,23 @@
       1,
       2
     ]
+  },
+  {
+    "person_id": 5,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Tadeusz",
+    "last_name": "Trawka",
+    "birth_date": "2000-01-01",
+    "death_date": null,
+    "partners_id": [
+      6
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": [],
+    "illnesses": [],
+    "residences": []
   }
 ]

@@ -37,8 +37,7 @@ def read_informations(file_name: str, given_id):
             dict = json_data[index]
             name = dict['name']
             elements.append(name)
-        if len(elements) == 1:
-            return elements[0]
+
         return elements
     else:
         index = binary_search(json_data, given_id)

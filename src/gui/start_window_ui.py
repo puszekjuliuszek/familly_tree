@@ -9,6 +9,7 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLineEdit, QMainWindow
 
 from src.Funtcions.find_family_relation import find_family_relation
+from src.Funtcions.uodate_partners import update_partners
 from src.definitions.definitions import *
 from src.definitions.ui_css import *
 from src.gui.multi_combobox import CheckableComboBox
@@ -358,14 +359,14 @@ class StartWindowUi(object):
 
     def open_tree_clicked(self):
         if self.tree_to_open is not None:
-            main_person = read_data(self.tree_to_open, 6)
+            main_person,peron_list = read_data(self.tree_to_open, 6, flag=True)
             # id 6 to babcia, id 4 mama, id 1 ja, 3grzegorz
             # TODO wywalić te dwie linijki, albo dołożyć wybór printowania drzewa
             # self.tree_window = TreeWindow(main_person, self.tree_to_open.split(".")[0])
             # self.tree_window.show()
 
             graph_ui = TreeWindowGraphUi()
-            canvas = graph_ui.setup_ui(main_person)
+            canvas = graph_ui.setup_ui(main_person,peron_list)
             canvas.figure.canvas.mpl_connect('pick_event', self.on_node_click)
             self.widget = QWidget()
             layout = QVBoxLayout()
@@ -514,8 +515,10 @@ class StartWindowUi(object):
     def is_dead_clicked(self) -> None:
         if self.is_dead.isChecked():
             self.e4.setDisabled(True)
+            self.e10.setDisabled(True)
         else:
             self.e4.setDisabled(False)
+            self.e10.setDisabled(False)
 
     def unable_inputs(self):
         self.e1.setDisabled(False)
@@ -715,17 +718,15 @@ class StartWindowUi(object):
         # TODO czy jak nie wszystkie dane są wprowadzone to coś z tym robimy? może już zrobiliśmy?
         file_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.tree_to_open
         self.read_inputs()
-
         with open(file_path, "r+") as f:
             file_data = json.load(f)
 
-        new_id = 1
-        file_data.sort(key=lambda x: x["person_id"])
+        new_id = 0
+        # file_data.sort(key=lambda x: x["person_id"])
         for person_data in file_data:
-            if person_data["person_id"] > new_id:
-                new_id = person_data["person_id"]
-                new_id += 1
-
+            new_id = max(new_id, person_data['person_id'])
+        new_id += 1
+        update_partners(new_id, self.person_to_edit_partners, file_data)
         person_data_dictionary = {'person_id': new_id, 'father_id': self.person_to_edit_father_id,
                                   'mother_id': self.person_to_edit_mother_id, 'first_name': self.e1.text(),
                                   'last_name': self.e2.text(), 'birth_date': self.person_to_edit_birth_date,
@@ -934,10 +935,10 @@ class StartWindowUi(object):
             file_data.pop(id_to_remove)
 
         self.read_inputs()
-
+        update_partners(self.id_to_edit, self.person_to_edit_partners, file_data)
         person_data_dictionary = {'person_id': self.id_to_edit, 'father_id': self.person_to_edit_father_id,
-                                  'mother_id': self.person_to_edit_mother_id,'first_name': self.e1.text(),
-                                  'last_name': self.e2.text(),'birth_date': self.person_to_edit_birth_date,
+                                  'mother_id': self.person_to_edit_mother_id, 'first_name': self.e1.text(),
+                                  'last_name': self.e2.text(), 'birth_date': self.person_to_edit_birth_date,
                                   'death_date': self.person_to_edit_death_date,
                                   'partners_id': self.person_to_edit_partners, 'gender': self.person_to_edit_gender,
                                   'death_reason': self.person_to_edit_death_reason,
@@ -980,12 +981,14 @@ class StartWindowUi(object):
             self.e10.setPlaceholderText(self.person_to_edit.death_reason)
         self.e5.setDisabled(False)
         if self.person_to_edit.father is not None:
-            self.e5.setPlaceholderText(f"{self.person_to_edit.father.first_name} {self.person_to_edit.father.last_name}")
+            self.e5.setPlaceholderText(
+                f"{self.person_to_edit.father.first_name} {self.person_to_edit.father.last_name}")
         else:
             self.e5.setPlaceholderText(" ")
         self.e6.setDisabled(False)
         if self.person_to_edit.mother is not None:
-            self.e6.setPlaceholderText(f"{self.person_to_edit.mother.first_name} {self.person_to_edit.mother.last_name}")
+            self.e6.setPlaceholderText(
+                f"{self.person_to_edit.mother.first_name} {self.person_to_edit.mother.last_name}")
         else:
             self.e6.setPlaceholderText(" ")
         self.e9.setDisabled(False)
@@ -1080,7 +1083,7 @@ class StartWindowUi(object):
         else:
             with open(file_path, "r+") as f:
                 file_data = json.load(f)
-            if len(parameters.values())>0:
+            if len(parameters.values()) > 0:
                 dictionary = {'id': max(parameters.values()) + 1, 'name': parameter}
             else:
                 dictionary = {'id': 1, 'name': parameter}

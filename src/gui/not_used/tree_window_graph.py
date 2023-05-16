@@ -13,9 +13,9 @@ from src.io_functions.read_data import read_data
 class TreeWindowGraph:
     def __init__(self, tree_name="Zawislak2.json", id=3):
         # super(TreeWindowGraph, self).__init__()
-        P = read_data(tree_name, id)
+        P, person_list = read_data(tree_name, id, flag=True)
         self.ui = TreeWindowGraphUi()
-        canvas = self.ui.setup_ui(P)
+        canvas = self.ui.setup_ui(P, person_list)
 
         app = QApplication([])
         self.widget = QWidget()
@@ -26,12 +26,7 @@ class TreeWindowGraph:
         app.exec()
 
 
-
-
-
-
 def window():
-
     TreeWindowGraph()
 
 

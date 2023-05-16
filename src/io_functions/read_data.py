@@ -51,6 +51,7 @@ def read_data(file_name: str, main_person_id: int = 1, personTo_id: int = -1, fl
     if flag:
         return main_person, persons_list
 
+
     return main_person
 
 
