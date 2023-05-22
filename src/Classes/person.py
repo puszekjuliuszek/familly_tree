@@ -18,7 +18,7 @@ class Person:
         self.gender = None
         self.death_reason = None
         self.brith_place = None
-        self.profession = None
+        self.profession = []
         self.illnesses = []
         self.residences = []
         self.tree_name = tree_name
@@ -86,8 +86,6 @@ class Person:
         else:
             mother_id = self.mother.person_id
 
-
-
         return {
             "person_id": self.person_id,
             "father_id": father_id,
@@ -105,6 +103,38 @@ class Person:
             "illnesses": SI.save_informations(f'{self.tree_name}\\illnesses.json', self.illnesses),
             "residences": SI.save_informations(f'{self.tree_name}\\cities.json', self.residences)
         }
+
+    def check_matching(self, other_person) -> int:
+        count = 0
+        if self.first_name == other_person.first_name:
+            count += 1
+        if self.last_name == other_person.last_name:
+            count += 1
+        if self.birth_date == other_person.birth_date:
+            count += 1
+        if self.death_date == other_person.death_date:
+            count += 1
+        if self.death_reason == other_person.death_reason:
+            count += 1
+        if self.birth_place == other_person.birth_place:
+            count += 1
+        if self.compare_lists(self.profession,other_person.profession):
+            count += 1
+        if self.compare_lists(self.illnesses,other_person.illnesses):
+            count += 1
+        if self.compare_lists(self.residences,other_person.residences):
+            count += 1
+
+        return count
+
+    def compare_lists(self, first_list, second_list) -> bool:
+        if len(first_list) != len(second_list):
+            return False
+        count = 0
+        for elem in first_list:
+            if elem in second_list:
+                count += 1
+        return count == len(first_list)
 
     def print_tree(self):
         print(f"Głowna osoba w drzewie to {self}")

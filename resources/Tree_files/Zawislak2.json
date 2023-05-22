@@ -65,7 +65,7 @@
     "mother_id": 0,
     "first_name": "Rozalia",
     "last_name": "Trawka",
-    "birth_date": "01-01-2000",
+    "birth_date": "01-01-1940",
     "death_date": null,
     "partners_id": [
       5
@@ -74,8 +74,8 @@
     "death_reason": null,
     "birth_place": null,
     "profession": [],
-    "illnesses": [],
-    "residences": []
+    "illnesses": [4],
+    "residences": [1]
   },
   {
     "person_id": 7,
@@ -138,7 +138,7 @@
     "mother_id": 9,
     "first_name": "Julian",
     "last_name": "Trawka",
-    "birth_date": "01-01-2000",
+    "birth_date": "01-01-2008",
     "death_date": null,
     "partners_id": [],
     "gender": 1,
@@ -230,7 +230,7 @@
     "mother_id": 0,
     "first_name": "Tadeusz",
     "last_name": "Trawka",
-    "birth_date": "2000-01-01",
+    "birth_date": "01-01-1960",
     "death_date": null,
     "partners_id": [
       6
