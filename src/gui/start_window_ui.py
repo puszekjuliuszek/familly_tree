@@ -9,6 +9,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFileDialog, QLineEdit, QMainWindow
 
+from src.Funtcions.compare_tree import compare_tree
 from src.Funtcions.find_family_relation import find_family_relation
 from src.Funtcions.uodate_partners import update_partners
 from src.definitions.definitions import *
@@ -1483,20 +1484,17 @@ class StartWindowUi(object):
         self.verticalLayout_6.addWidget(self.info_label)
 
     def choose_tree_to_similarities_clicked(self):
-        tree_first_path = ROOT_DIR+"\\resources\\Tree_files\\"+self.trees.currentText()
+        tree_first_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees.currentText()
         tree_second_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees2.currentText()
-        self.info_label.setText("nie wiem którą funkcję mam tu podłączyć")
-        # if funkcja_do_szukania_podobieństwa(tree_first_path, tree_second_path):
-        #     self.error_label.setText("udało się znaleźć podobieństwa")
-        #      # TODO czy robimy mergowanie tych drzew?
-        #     self.merge_trees = QtWidgets.QPushButton()
-        #     self.merge_trees.setAutoDefault(False)
-        #     self.merge_trees.clicked.connect(self.merge_trees_clicked)
-        #     self.verticalLayout_6.addWidget(self.merge_trees)
-        #     self.choose_tree_to_similarities.setText("Połącz te drzewa")
-        # else:
-        #     self.error_label.setText("nie udało się znaleźć podobieństwa")
-        # pass
+        minimum_matching = 8
+        # minium matching from 1 to 9
+        # minium matching znajduje poprawnie
+        matches = compare_tree(self.trees.currentText(), self.trees2.currentText(), minimum_matching)
+        output = ""
+        for p, o in matches:
+            output += f"Found matching between {p} and {o} \n"
+        self.info_label.setText(output)
+        #  TODO czy robimy mergowanie tych drzew?
 
     def merge_trees_clicked(self):
         # TODO do wywalenie jak nie mergujemy tych drzew

@@ -42,8 +42,6 @@ def compare_tree(tree_path1: str, tree_path2: str, minimum_matching: int,)->list
     find_matching(tree1_man_list, tree2_man_list, minimum_matching, matches)
     find_matching(tree1_woman_list, tree2_woman_list, minimum_matching, matches)
 
-    for p, o in matches:
-        print(f"Found matching between {p} and {o}")
 
 
     return matches

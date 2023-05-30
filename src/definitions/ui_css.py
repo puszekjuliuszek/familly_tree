@@ -509,7 +509,7 @@ START_WINDOW_FIND_SIMILARITIES_CSS = \
         }
         #info_lbl {
             background-color: rgba(44,49,62,255);
-            color: "red";
+            color: "white";
         }
         QWidget {
             background-color: rgba(27,29,35,255);
