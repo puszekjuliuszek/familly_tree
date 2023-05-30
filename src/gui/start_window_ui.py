@@ -1,6 +1,7 @@
 import json
 from _csv import reader
 from collections import deque
+import matplotlib.pyplot as plt
 from functools import partial
 from os import listdir
 from shutil import copyfile
@@ -61,6 +62,8 @@ class StartWindowUi(object):
         self.e3 = None
         self.e2 = None
         self.e1 = None
+        self.error_label = QtWidgets.QLabel()
+        self.error_label.setObjectName("error_lbl")
         self.widget = None
         self.open_tree_bt = None
         self.add_tree_bt = None
@@ -71,6 +74,8 @@ class StartWindowUi(object):
         self.verticalLayout_4 = None
         self.verticalLayoutWidget_4 = None
         self.verticalLayout_3 = None
+        self.find_similarities = QtWidgets.QPushButton()
+        self.analise_tree = QtWidgets.QPushButton()
         self.verticalLayoutWidget_3 = None
         self.verticalLayoutWidget_3 = None
         self.horizontalLayout = None
@@ -134,6 +139,8 @@ class StartWindowUi(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
 
+        self.error_label.setFont(QFont("Arial", 15))
+
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(parent=self.central_widget)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(0, Y1, X1, Y2 - Y1))
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
@@ -147,6 +154,7 @@ class StartWindowUi(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout.addWidget(self.error_label)
 
         self.verticalLayoutWidget_3 = QtWidgets.QWidget(parent=self.central_widget)
         self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(0, Y2, X1, WIN_HEIGHT - Y2))
@@ -243,8 +251,18 @@ class StartWindowUi(object):
         self.find_relation.setObjectName("find_relation")
         self.verticalLayout_2.addWidget(self.find_relation)
         self.find_relation.clicked.connect(self.find_relation_clicked)
+        self.find_similarities.setAutoDefault(False)
+        self.find_similarities.setObjectName("find_similarities")
+        self.verticalLayout_2.addWidget(self.find_similarities)
+        self.find_similarities.clicked.connect(self.find_similarities_clicked)
+
+        self.analise_tree.setAutoDefault(False)
+        self.analise_tree.setObjectName("analise_tree")
+        self.verticalLayout_2.addWidget(self.analise_tree)
+        self.analise_tree.clicked.connect(self.analise_tree_clicked)
 
         self.translate_ui(main_window)
+
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def translate_ui(self, main_window: QMainWindow) -> None:
@@ -261,6 +279,15 @@ class StartWindowUi(object):
         self.add_illness.setText(_translate("MainWindow", "Dodaj chorobę"))
         self.add_profession.setText(_translate("MainWindow", "Dodaj zawód"))
         self.find_relation.setText(_translate("MainWindow", "Znajdź pokrewieństwo"))
+        self.find_similarities.setText(_translate("MainWindow", "Znajdź podobieństwa"))
+        self.analise_tree.setText(_translate("MainWindow", "Analizuj drzewo"))
+
+    def set_error_label_text(self, text: str) -> None:
+        """ moja metodka, żeby tekst w error label znikał"""
+        self.error_label.setText(text)
+        # TODO nie działa xd
+        # time.sleep(2)
+        # self.error_label.setText(" ")
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 1 - dodawanie drzewa z pliku $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def add_saved_trees(self) -> None:
@@ -326,15 +353,18 @@ class StartWindowUi(object):
 
     @staticmethod
     def add_tree_to_saved_trees(path: str) -> None:
-        tree_name = path.split("/")[-1]
+        if len(path.split("/"))>1:
+            tree_name = path.split("/")[-1]
+        else:
+            tree_name = path.split("\\")[-1]
         relative_path = "../../resources/Tree_files/" + tree_name
         tree_names = []
-        with open("../../resources/saved_trees.csv", "r") as file:
+        with open(ROOT_DIR+"\\resources\\saved_trees.csv", "r") as file:
             csvreader = reader(file)
             for row in csvreader:
                 tree_names.append(row[1].strip())
         if tree_name not in tree_names:
-            with open("../../resources/saved_trees.csv", "a") as file:
+            with open(ROOT_DIR+"\\resources\\saved_trees.csv", "a") as file:
                 file.write(relative_path + "," + tree_name + "\n")
         else:
             # TODO może info, że drzewo jest już zapisane?
@@ -386,12 +416,11 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
 
         self.MainWindow.setStyleSheet(START_WINDOW_PREPARE_BACKGROUND_CSS)
         self.tree_to_open = None
@@ -589,19 +618,21 @@ class StartWindowUi(object):
         self.e14.addItems(self.places)
 
     def update_dicts(self) -> None:
-        file_path = ROOT_DIR + "\\resources\\information\\" + self.tree_to_open.split(".")[0]
         if self.tree_to_open is not None:
+            file_path = ROOT_DIR + "\\resources\\information\\" + self.tree_to_open.split(".")[0]
             self.people_dict = read_people_to_dict(self.tree_to_open)
             self.woman_list = [person for person in self.people_dict.keys() if person.split(" ")[0][-1] == "a"]
             self.man_list = [person for person in self.people_dict.keys() if person.split(" ")[0][-1] != "a"]
-        self.places_dicts = json_to_dict(file_path + "\\cities.json")
-        self.places = [place for place in self.places_dicts.keys()]
-        self.death_reasons_dicts = json_to_dict(file_path + "\\death_reasons.json")
-        self.death_reasons = [death for death in self.death_reasons_dicts.keys()]
-        self.illnesses_dicts = dict(json_to_dict(file_path + "\\illnesses.json"))
-        self.illnesses = [illness for illness in self.illnesses_dicts.keys()]
-        self.professions_dicts = json_to_dict(file_path + "\\professions.json")
-        self.professions = [profession for profession in self.professions_dicts.keys()]
+            self.places_dicts = json_to_dict(file_path + "\\cities.json")
+            self.places = [place for place in self.places_dicts.keys()]
+            self.death_reasons_dicts = json_to_dict(file_path + "\\death_reasons.json")
+            self.death_reasons = [death for death in self.death_reasons_dicts.keys()]
+            self.illnesses_dicts = dict(json_to_dict(file_path + "\\illnesses.json"))
+            self.illnesses = [illness for illness in self.illnesses_dicts.keys()]
+            self.professions_dicts = json_to_dict(file_path + "\\professions.json")
+            self.professions = [profession for profession in self.professions_dicts.keys()]
+        else:
+            self.error_label.setText("Wiedziałem, że coś źle poklikasz, drzewo wybierz")
 
     def set_multiombobox_placeholder_texts(self):
         self.e8.setPlaceholderText(" ")
@@ -711,11 +742,9 @@ class StartWindowUi(object):
         self.import_data_from_tree()
         self.add_person_bt.setDisabled(False)
 
-    """ Dopisywanie nowej osoby do pliku drzewa """
-
     def enter_person(self) -> None:
+        """ Dopisywanie nowej osoby do pliku drzewa """
         # TODO czy to nie jest redundancja kodu?
-        # TODO czy jak nie wszystkie dane są wprowadzone to coś z tym robimy? może już zrobiliśmy?
         file_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.tree_to_open
         self.read_inputs()
         with open(file_path, "r+") as f:
@@ -741,6 +770,8 @@ class StartWindowUi(object):
         file_data.append(person_data_dictionary)
         with open(file_path, "w+") as f:
             json.dump(file_data, f)
+
+        self.error_label.setText("Udało się dodać tę osobę")
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 3 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def find_person_clicked(self) -> None:
@@ -774,7 +805,7 @@ class StartWindowUi(object):
         self.import_data_from_tree()
 
     def find_person_in_tree(self) -> None:
-        main_person = read_data(self.tree_to_open, 1)
+        main_person = read_data(self.tree_to_open, 1, flag=True)
         output_list = []
         que = deque()
         que.append(main_person)
@@ -857,6 +888,9 @@ class StartWindowUi(object):
             setattr(self, attr_name, PersonWindow(person, self.tree_to_open))
             attr = getattr(self, attr_name)
             attr.show()
+
+        if len(output_set) == 0:
+            self.error_label.setText("Nie ma ani jednej osoby speniającej te kryteria")
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 4 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def edit_person_clicked(self) -> None:
@@ -951,6 +985,8 @@ class StartWindowUi(object):
         with open(file_path, "w+") as f:
             json.dump(file_data, f)
 
+        self.error_label.setText("Udało się zmienić dane")
+
     def import_people_from_tree_to_edit(self) -> None:
         self.update_dicts()
         self.e7.setPlaceholderText("wybierz osobę")
@@ -978,7 +1014,10 @@ class StartWindowUi(object):
             self.e10.setPlaceholderText(" ")
         else:
             self.e4.setDisabled(False)
-            self.e10.setPlaceholderText(self.person_to_edit.death_reason)
+            if self.person_to_edit.death_reason is not None:
+                self.e10.setPlaceholderText(self.person_to_edit.death_reason)
+            else:
+                self.e10.setPlaceholderText(" ")
         self.e5.setDisabled(False)
         if self.person_to_edit.father is not None:
             self.e5.setPlaceholderText(
@@ -1017,22 +1056,16 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_6.count())):
-            self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_TREE_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
         self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
                                                 Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
-
-        self.error_label = QtWidgets.QLabel()
-        self.error_label.setFont(QFont("Arial", 15))
-        self.error_label.setObjectName("error_lbl")
-        self.verticalLayout_6.addWidget(self.error_label)
 
         name_lbl = QtWidgets.QLabel()
         name_lbl.setText("podaj nazwę drzewa:")
@@ -1054,44 +1087,51 @@ class StartWindowUi(object):
         self.add_tree_main_bt.setText("Utwórz drzewo o takiej nazwie")
 
     def make_new_tree(self):
-        self.load_saved_trees()
-        if self.e1.text() in self.trees_list:
-            self.error_label.setText("Drzewo o takiej nazwie już istnieje, wybierz inną nazwę")
+        if self.e1.text().strip() != "":
+            self.load_saved_trees()
+            if self.e1.text() in self.trees_list:
+                # TODO czy to działa?
+                self.error_label.setText("Drzewo o takiej nazwie już istnieje, wybierz inną nazwę")
+            else:
+                with open(ROOT_DIR + "\\resources\\Tree_files\\" + self.e1.text() + ".json", "w") as file:
+                    json.dump([], file)
+                os.mkdir(ROOT_DIR + "\\resources\\information\\" + self.e1.text())
+                with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\death_reasons.json", "w") as file:
+                    json.dump([], file)
+                with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\illnesses.json", "w") as file:
+                    json.dump([], file)
+                with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\professions.json", "w") as file:
+                    json.dump([], file)
+                with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\cities.json", "w") as file:
+                    json.dump([], file)
+                self.add_tree_to_saved_trees(ROOT_DIR+"\\resources\\Tree_files\\" + self.e1.text() + ".json")
+                self.error_label.setText(f"Udało się dodać drzewo {self.e1.text()}")
         else:
-            with open(ROOT_DIR + "\\resources\\Tree_files\\" + self.e1.text() + ".json", "w") as file:
-                json.dump([], file)
-            os.mkdir(ROOT_DIR + "\\resources\\information\\" + self.e1.text())
-            with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\death_reasons.json", "w") as file:
-                json.dump([], file)
-            with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\illnesses.json", "w") as file:
-                json.dump([], file)
-            with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\professions.json", "w") as file:
-                json.dump([], file)
-            with open(ROOT_DIR + "\\resources\\information\\" + self.e1.text() + "\\cities.json", "w") as file:
-                json.dump([], file)
-            self.add_tree_to_saved_trees("../../resources/Tree_files/" + self.e1.text() + ".json")
-            self.error_label.setText(f"Udało się dodać drzewo {self.e1.text()}")
+            self.error_label.setText(f"Wpisz te nazwe drzewa, bo jeszcze się apka wywali")
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przyciski 6,7,8,9 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def append_parameter_to_file(self, file_path):
         parameter = self.e1.text()
         # TODO niedodawalne jak nie wybierzesz drzewa
-        file_path = ROOT_DIR + "\\resources\\information\\" + self.trees.currentText().split(".")[0] + file_path
-        parameters = json_to_dict(file_path)
-        if parameters.get(parameter) is not None:
-            self.error_label.setText("dodawanie nie powiodło się, taka nazwa już istnieje")
-        else:
-            with open(file_path, "r+") as f:
-                file_data = json.load(f)
-            if len(parameters.values()) > 0:
-                dictionary = {'id': max(parameters.values()) + 1, 'name': parameter}
+        if parameter.strip() != "":
+            file_path = ROOT_DIR + "\\resources\\information\\" + self.trees.currentText().split(".")[0] + file_path
+            parameters = json_to_dict(file_path)
+            if parameters.get(parameter) is not None:
+                self.error_label.setText("dodawanie nie powiodło się, taka nazwa już istnieje")
             else:
-                dictionary = {'id': 1, 'name': parameter}
-            file_data.append(dictionary)
-            with open(file_path, "w+") as f:
-                json.dump(file_data, f)
+                with open(file_path, "r+") as f:
+                    file_data = json.load(f)
+                if len(parameters.values()) > 0:
+                    dictionary = {'id': max(parameters.values()) + 1, 'name': parameter}
+                else:
+                    dictionary = {'id': 1, 'name': parameter}
+                file_data.append(dictionary)
+                with open(file_path, "w+") as f:
+                    json.dump(file_data, f)
 
-            self.error_label.setText("dodawanie powiodło się")
+                self.error_label.setText("dodawanie powiodło się")
+        else:
+            self.set_error_label_text("prawie apka spadła z rowerka, uff, wybierz drzewo")
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 6 - dodawanie miasta $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def add_city_clicked(self):
@@ -1100,21 +1140,18 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_6.count())):
-            self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_CITY_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
         self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
                                                 Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
-        self.error_label = QtWidgets.QLabel()
-        self.error_label.setFont(QFont("Arial", 15))
-        self.error_label.setObjectName("error_lbl")
-        self.verticalLayout_6.addWidget(self.error_label)
+
+
 
         tree_lbl = QtWidgets.QLabel()
         tree_lbl.setText("wybierz drzewo do którego dodajemy miasto:")
@@ -1145,6 +1182,7 @@ class StartWindowUi(object):
         self.verticalLayout_6.addWidget(self.add_city_main_bt)
         self.add_city_main_bt.setText("Dodaj miasto o takiej nazwie")
 
+
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 7 - dodawanie powodu śmierci $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def add_death_reason_clicked(self):
         # TODO redundancja
@@ -1152,8 +1190,7 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
@@ -1163,10 +1200,7 @@ class StartWindowUi(object):
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
         self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
                                                 Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
-        self.error_label = QtWidgets.QLabel()
-        self.error_label.setFont(QFont("Arial", 15))
-        self.error_label.setObjectName("error_lbl")
-        self.verticalLayout_6.addWidget(self.error_label)
+
 
         tree_lbl = QtWidgets.QLabel()
         tree_lbl.setText("wybierz drzewo do którego dodajemy powód śmierci:")
@@ -1204,21 +1238,16 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_6.count())):
-            self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_ILLNESS_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
         self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
                                                 Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
-        self.error_label = QtWidgets.QLabel()
-        self.error_label.setFont(QFont("Arial", 15))
-        self.error_label.setObjectName("error_lbl")
-        self.verticalLayout_6.addWidget(self.error_label)
 
         tree_lbl = QtWidgets.QLabel()
         tree_lbl.setText("wybierz drzewo do którego dodajemy chorobę:")
@@ -1256,21 +1285,16 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_6.count())):
-            self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_PROFESSION_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
         self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
                                                 Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
-        self.error_label = QtWidgets.QLabel()
-        self.error_label.setFont(QFont("Arial", 15))
-        self.error_label.setObjectName("error_lbl")
-        self.verticalLayout_6.addWidget(self.error_label)
 
         tree_lbl = QtWidgets.QLabel()
         tree_lbl.setText("wybierz drzewo do którego dodajemy zawód:")
@@ -1308,17 +1332,15 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_6.count())):
-            self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_FIND_RELATION_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, Y4)
-        # self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
-        #                                         Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
+        self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, 0, 0)
 
         tree_lbl = QtWidgets.QLabel()
         tree_lbl.setText("wybierz drzewo do którego dodajemy zawód:")
@@ -1348,6 +1370,7 @@ class StartWindowUi(object):
 
         self.e5.clear()
         self.verticalLayout_6.addWidget(self.e5)
+        self.e5.setDisabled(True)
 
         name2_lbl = QtWidgets.QLabel()
         name2_lbl.setText("wybierz drugą osobę:")
@@ -1356,6 +1379,7 @@ class StartWindowUi(object):
 
         self.e6.clear()
         self.verticalLayout_6.addWidget(self.e6)
+        self.e6.setDisabled(True)
 
         self.find_relation_inside = QtWidgets.QPushButton()
         font = QtGui.QFont()
@@ -1366,11 +1390,13 @@ class StartWindowUi(object):
         self.find_relation_inside.clicked.connect(self.find_relation_inside_clicked)
         self.verticalLayout_6.addWidget(self.find_relation_inside)
         self.find_relation_inside.setText("Określ relację")
+        self.find_relation_inside.setDisabled(True)
 
-        self.error_label = QtWidgets.QLabel()
-        self.error_label.setFont(QFont("Arial", 15))
-        self.error_label.setObjectName("error_lbl")
-        self.verticalLayout_6.addWidget(self.error_label)
+        self.info_label = QtWidgets.QLabel()
+        self.info_label.setText("")
+        self.info_label.setObjectName("info_lbl")
+        self.verticalLayout_6.addWidget(self.info_label)
+
 
     def find_relation_inside_clicked(self):
         first_person = self.e5.currentText()
@@ -1378,13 +1404,17 @@ class StartWindowUi(object):
         first_id = self.people_dict.get(first_person)
         second_id = self.people_dict.get(second_person)
         text_to_show = find_family_relation(first_id, second_id, self.tree_to_open)
-        self.error_label.setText(text_to_show)
+        # TODO info label
+        self.info_label.setText(text_to_show)
 
     def chose_tree_to_find_relation_clicked(self):
         self.tree_to_open = self.trees.currentText()
         self.update_dicts()
         self.e6.addItems(self.people_dict.keys())
         self.e5.addItems(self.people_dict.keys())
+        self.e5.setDisabled(False)
+        self.e6.setDisabled(False)
+        self.find_relation_inside.setDisabled(False)
 
     def load_saved_trees(self):
         self.trees_list = []
@@ -1392,3 +1422,139 @@ class StartWindowUi(object):
             csvreader = reader(file)
             for row in csvreader:
                 self.trees_list.append(row[1].strip())
+
+
+    # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 11 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    def find_similarities_clicked(self):
+        # TODO redundancja
+        for i in reversed(range(self.verticalLayout_3.count())):
+            self.verticalLayout_3.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_4.count())):
+            self.verticalLayout_4.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_7.count())):
+            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.MainWindow.setStyleSheet(START_WINDOW_FIND_SIMILARITIES_CSS)
+        self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
+        self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, Y4)
+        # self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
+        #                                         Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
+
+        tree_lbl = QtWidgets.QLabel()
+        tree_lbl.setText("wybierz pierwsze drzewo do znalezienia podobieństw:")
+        tree_lbl.setObjectName("lbl")
+        self.verticalLayout_6.addWidget(tree_lbl)
+
+        self.load_saved_trees()
+        self.trees = QtWidgets.QComboBox()
+        self.trees.setPlaceholderText("wybierz drzewo")
+        self.trees.addItems(self.trees_list)
+        self.verticalLayout_6.addWidget(self.trees)
+
+        tree_lbl2 = QtWidgets.QLabel()
+        tree_lbl2.setText("wybierz drugie drzewo do znalezienia podobieństw:")
+        tree_lbl2.setObjectName("lbl2")
+        self.verticalLayout_6.addWidget(tree_lbl2)
+
+        self.load_saved_trees()
+        self.trees2 = QtWidgets.QComboBox()
+        self.trees2.setPlaceholderText("wybierz drzewo")
+        self.trees2.addItems(self.trees_list)
+        self.verticalLayout_6.addWidget(self.trees2)
+
+        self.choose_tree_to_similarities = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        self.choose_tree_to_similarities.setFont(font)
+        self.choose_tree_to_similarities.setAutoDefault(False)
+        self.choose_tree_to_similarities.clicked.connect(self.choose_tree_to_similarities_clicked)
+        self.verticalLayout_6.addWidget(self.choose_tree_to_similarities)
+        self.choose_tree_to_similarities.setText("W tym drzewie znajdź podobieństwa")
+
+        self.info_label = QtWidgets.QLabel()
+        self.info_label.setText("")
+        self.info_label.setObjectName("info_lbl")
+        self.verticalLayout_6.addWidget(self.info_label)
+
+    def choose_tree_to_similarities_clicked(self):
+        tree_first_path = ROOT_DIR+"\\resources\\Tree_files\\"+self.trees.currentText()
+        tree_second_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees2.currentText()
+        self.info_label.setText("nie wiem którą funkcję mam tu podłączyć")
+        # if funkcja_do_szukania_podobieństwa(tree_first_path, tree_second_path):
+        #     self.error_label.setText("udało się znaleźć podobieństwa")
+        #      # TODO czy robimy mergowanie tych drzew?
+        #     self.merge_trees = QtWidgets.QPushButton()
+        #     self.merge_trees.setAutoDefault(False)
+        #     self.merge_trees.clicked.connect(self.merge_trees_clicked)
+        #     self.verticalLayout_6.addWidget(self.merge_trees)
+        #     self.choose_tree_to_similarities.setText("Połącz te drzewa")
+        # else:
+        #     self.error_label.setText("nie udało się znaleźć podobieństwa")
+        # pass
+
+    def merge_trees_clicked(self):
+        # TODO do wywalenie jak nie mergujemy tych drzew
+        pass
+
+    # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 12 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    def analise_tree_clicked(self):
+        # TODO redundancja
+        for i in reversed(range(self.verticalLayout_3.count())):
+            self.verticalLayout_3.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_4.count())):
+            self.verticalLayout_4.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_7.count())):
+            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.MainWindow.setStyleSheet(START_WINDOW_ANALISE_TREE_CSS)
+        self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
+        self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, Y4)
+        # self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
+        #                                         Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
+
+        tree_lbl = QtWidgets.QLabel()
+        tree_lbl.setText("wybierz drzewo do przeanalizowania:")
+        tree_lbl.setObjectName("lbl")
+        self.verticalLayout_6.addWidget(tree_lbl)
+
+        self.load_saved_trees()
+        self.trees = QtWidgets.QComboBox()
+        self.trees.setPlaceholderText("wybierz drzewo")
+        self.trees.addItems(self.trees_list)
+        self.verticalLayout_6.addWidget(self.trees)
+
+        self.choose_tree_to_analise = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        self.choose_tree_to_analise.setFont(font)
+        self.choose_tree_to_analise.setAutoDefault(False)
+        self.choose_tree_to_analise.clicked.connect(self.choose_tree_to_analise_clicked)
+        self.verticalLayout_6.addWidget(self.choose_tree_to_analise)
+        self.choose_tree_to_analise.setText("W to drzewo analizuj")
+
+        self.info_label = QtWidgets.QLabel()
+        self.info_label.setText("")
+        self.info_label.setObjectName("info_lbl")
+        self.verticalLayout_6.addWidget(self.info_label)
+
+    def choose_tree_to_analise_clicked(self):
+        # tree_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees.currentText()
+        self.tree_to_open = self.trees.currentText()
+        main_person, person_list = read_data(self.tree_to_open, 1, flag = True)
+        self.update_dicts()
+        places_count_list = [0 for _ in range(max(self.places_dicts.values()))]
+        for person in person_list:
+            for place in person.residences:
+                places_count_list[self.places_dicts.get(place)] += 1
+
+        fig = plt.figure()
+        ax = fig.add_axes([0, 0, 1, 1])
+        places_names = [self.places_dicts.keys()[index] for index in range(max(self.places_dicts.values()))]
+        ax.bar(places_names, places_count_list)
+        plt.show()

@@ -82,8 +82,8 @@ class CheckableComboBox(QComboBox):
         return self.lineEdit().text()
 
     def clear(self) -> None:
-        for item in range(self.count()):
-            self.removeItem(item)
+        for item in range(self.count()+1):
+            self.removeItem(0)
 
 
 if __name__ == "__main__":
