@@ -27,97 +27,74 @@ from graphviz import Digraph, Source, Graph
 class TreeWindowGraphUi:
     def setup_ui(self, person: Person, person_list: list) -> FigureCanvas:
         G = Digraph(comment='Family Tree')
-        # G.attr(splines='true')
-        # G.attr(overlap='true',concentrate='false',rankdir='TB',newrank='true',splines='true')
-        # G.attr(layout="neato")
-        # add the root node
-        G.node(str(person))
+
 
         partner_edge = []
 
         already_added = set()
         queue = deque()
+        def BFS(person_start):
+            queue.append(person_start)
+            already_added.add(person_start)
+            G.node(str(person_start))
+            while len(queue) > 0:
+                person_tmp = queue.pop()
 
-        queue.append(person)
-        already_added.add(person)
+                for person_partner in person_tmp.partners:
+                    if person_partner not in already_added:
+                        already_added.add(person_partner)
+                        queue.append(person_partner)
 
-        while len(queue) > 0:
-            person_tmp = queue.pop()
+                    if (str(person_tmp), str(person_partner)) not in partner_edge:
+                        partner_edge.append((str(person_partner), str(person_tmp)))
 
-            for person_partner in person_tmp.partners:
-                if person_partner not in already_added:
-                    already_added.add(person_partner)
-                    queue.append(person_partner)
+                        with G.subgraph() as s:
+                            s.attr(rank='same')
+                            s.node(str(person_tmp), shape='oval')
+                            s.node(str(person_partner), shape='oval')
+                            s.node(str(person_tmp) + str(person_partner), label=' ', shape='point', color='red',
+                                   **{'width': str(0.08)})  # środkowy
 
-                if (str(person_tmp), str(person_partner)) not in partner_edge:
-                    partner_edge.append((str(person_partner), str(person_tmp)))
+                            s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none', color='red')
+                            s.edge(str(person_tmp) + str(person_partner), str(person_tmp), dir='none', color='red')
 
-                    with G.subgraph() as s:
-                        s.attr(rank='same')
-                        s.node(str(person_tmp), shape='oval')
-                        s.node(str(person_partner), shape='oval')
-                        s.node(str(person_tmp) + str(person_partner), label=' ', shape='point', color='red',
-                               **{'width': str(0.08)})  # środkowy
-                        # s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none', constraint = 'true')
-                        # s.edge(str(person_tmp),str(person_tmp)+str(person_partner),dir='none',constraint = 'true')
+                        for person_child in person_tmp.children:
 
-                        s.edge(str(person_partner), str(person_tmp) + str(person_partner), dir='none', color='red')
-                        s.edge(str(person_tmp) + str(person_partner), str(person_tmp), dir='none', color='red')
+                            if person_child.father in [person_tmp, person_partner] and person_child.mother in [person_tmp,
+                                                                                                               person_partner]:
+                                G.node(str(person_child), shape='oval')
+                                G.edge(str(person_tmp) + str(person_partner), str(person_child))
 
-                    for person_child in person_tmp.children:
+                                if person_child not in already_added:
+                                    already_added.add(person_child)
+                                    queue.append(person_child)
 
-                        if person_child.father in [person_tmp, person_partner] and person_child.mother in [person_tmp,
-                                                                                                           person_partner]:
-                            G.node(str(person_child), shape='oval')
-                            G.edge(str(person_tmp) + str(person_partner), str(person_child))
 
-                            if person_child not in already_added:
-                                already_added.add(person_child)
-                                queue.append(person_child)
+                if person_tmp.mother is not None:
+                    if person_tmp.mother not in already_added:
+                        already_added.add(person_tmp.mother)
+                        queue.append(person_tmp.mother)
 
-            # if person_tmp.children != []:
-            #     with G.subgraph() as c:
-            #         c.attr(rank='same')
-            #         for person_child in person_tmp.children:
-            #             c.node(str(person_child),shape='oval')
-            #
-            #
-            #     for person_child in person_tmp.children:
-            #         if person_child not in already_added:
-            #             already_added.add(person_child)
-            #             queue.append((person_child, level_tmp - 1))
-            #
-            #
-            #         G.edge(str(person_tmp)+str(person_tmp.partners[0]), str(person_child))
+                    G.node(str(person_tmp.mother), shape='oval')
 
-            if person_tmp.mother is not None:
-                if person_tmp.mother not in already_added:
-                    already_added.add(person_tmp.mother)
-                    queue.append(person_tmp.mother)
+                    if person_tmp.father is None:
+                        G.edge(str(person_tmp.mother),str(person_tmp))
 
-                G.node(str(person_tmp.mother), shape='oval')
+                if person_tmp.father is not None:
+                    if person_tmp.father not in already_added:
+                        already_added.add(person_tmp.father)
+                        queue.append(person_tmp.father)
 
-            if person_tmp.father is not None:
-                if person_tmp.father not in already_added:
-                    already_added.add(person_tmp.father)
-                    queue.append(person_tmp.father)
+                    G.node(str(person_tmp.father), shape='oval')
 
-                G.node(str(person_tmp.father), shape='oval')
+                    if person_tmp.mother is None:
+                        G.edge(str(person_tmp.father),str(person_tmp))
 
-        # for elem in already_added:
-        #     elem.print_person()
-        #     print()
-        #
-        # print('hi')
-        # for elem in already_added:
-        #     print(elem.to_dict())
-
-        # G.render('family_now.gv')
+        BFS(person)
 
         for person_tmp in person_list:
             if person_tmp not in already_added:
-                already_added.add(person_tmp)
-                G.node(str(person_tmp),shape='oval')
+                BFS(person_tmp)
 
         png_bytes = G.pipe(format='png')
         img = np.array(Image.open(io.BytesIO(png_bytes)))

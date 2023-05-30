@@ -1,38 +1,16 @@
 [
   {
     "person_id": 1,
-    "father_id": 3,
-    "mother_id": 4,
-    "first_name": "Maks",
-    "last_name": "Zawislak",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [],
-    "gender": 1,
-    "death_reason": null,
-    "birth_place": 1,
-    "profession": [
-      1,
-      2
-    ],
-    "illnesses": [],
-    "residences": [
-      1,
-      2
-    ]
-  },
-  {
-    "person_id": 3,
-    "father_id": 12,
-    "mother_id": 11,
-    "first_name": "Grzegorz",
-    "last_name": "Zawislak",
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Rozalia",
+    "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": null,
     "partners_id": [
-      4
+      2
     ],
-    "gender": 1,
+    "gender": 0,
     "death_reason": null,
     "birth_place": null,
     "profession": [],
@@ -40,35 +18,16 @@
     "residences": []
   },
   {
-    "person_id": 4,
-    "father_id": 5,
-    "mother_id": 6,
-    "first_name": "Urszula",
-    "last_name": "Zawislak",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      3
-    ],
-    "gender": 0,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [
-      2
-    ],
-    "illnesses": [],
-    "residences": []
-  },
-  {
-    "person_id": 6,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Rozalia",
+
+    "person_id": 3,
+    "father_id": 2,
+    "mother_id": 1,
+    "first_name": "Daniel",
     "last_name": "Trawka",
     "birth_date": "01-01-1940",
     "death_date": null,
     "partners_id": [
-      5
+      4
     ],
     "gender": 0,
     "death_reason": null,
@@ -97,15 +56,15 @@
     ]
   },
   {
-    "person_id": 11,
+    "person_id": 4,
     "father_id": 0,
     "mother_id": 0,
-    "first_name": "Danuta",
-    "last_name": "Zawislak",
+    "first_name": "Anna",
+    "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": "01-01-2001",
     "partners_id": [
-      12
+      3
     ],
     "gender": 0,
     "death_reason": 1,
@@ -117,11 +76,11 @@
     "residences": []
   },
   {
-    "person_id": 12,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Bronislaw",
-    "last_name": "Zawislak",
+    "person_id": 5,
+    "father_id": 3,
+    "mother_id": 4,
+    "first_name": "Julian",
+    "last_name": "Trawka",
     "birth_date": "01-01-2000",
     "death_date": "01-01-2001",
     "partners_id": [
@@ -148,24 +107,21 @@
     "partners_id": [],
     "gender": 1,
     "death_reason": null,
-    "birth_place": 1,
-    "profession": 1,
+    "birth_place": null,
+    "profession": [],
     "illnesses": [],
-    "residences": [
-      1,
-      2
-    ]
+    "residences": []
   },
   {
-    "person_id": 5,
+    "person_id": 2,
     "father_id": 0,
     "mother_id": 0,
     "first_name": "Tadeusz",
     "last_name": "Trawka",
-    "birth_date": "01-01-1960",
+    "birth_date": "2000-01-01",
     "death_date": null,
     "partners_id": [
-      6
+      1
     ],
     "gender": 1,
     "death_reason": null,
