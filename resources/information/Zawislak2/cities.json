@@ -1,18 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "Rzeszow"
-  },
-  {
-    "id": 2,
-    "name": "Krakow"
-  },
-  {
-    "id": 3,
-    "name": "Warszawa"
-  },
-  {
-    "id": 4,
-    "name": "Katowice"
-  }
-]
+[{"id": 1, "name": "Rzeszow"}, {"id": 2, "name": "Krakow"}, {"id": 3, "name": "Warszawa"}, {"id": 4, "name": "Katowice"}, {"id": 5, "name": "W\u0142oc\u0142awek"}]

@@ -711,7 +711,8 @@ class StartWindowUi(object):
             self.person_to_edit_illnesses = []
         if len(self.person_to_edit_residences) == 1 and self.person_to_edit_residences[0] is None:
             self.person_to_edit_residences = []
-        if len(self.person_to_edit_partners) == 1 and self.person_to_edit_partners is {None}:
+        # TODO ciągle nie działa
+        if len(self.person_to_edit_partners) == 1 and self.person_to_edit_partners == set([None]):
             self.person_to_edit_partners = []
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 2 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
