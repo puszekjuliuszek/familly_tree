@@ -13,6 +13,7 @@ from src.Funtcions.find_family_relation import find_family_relation
 from src.Funtcions.uodate_partners import update_partners
 from src.definitions.definitions import *
 from src.definitions.ui_css import *
+from src.gui.info_window import InfoWindow
 from src.gui.multi_combobox import CheckableComboBox
 from src.gui.person_window import PersonWindow
 from src.gui.tree_window_graph_ui import TreeWindowGraphUi
@@ -671,9 +672,9 @@ class StartWindowUi(object):
                 self.person_to_edit_death_reason = self.death_reasons_dicts.get(self.e10.placeholderText())
 
         # partners
-        self.person_to_edit_partners = []
+        self.person_to_edit_partners = set()
         for partner in self.e8.currentText().split(", "):
-            self.person_to_edit_partners.append(self.people_dict.get(partner))
+            self.person_to_edit_partners.add(self.people_dict.get(partner))
 
         # gender
         if self.e9.currentText() == "Kobieta" or self.e9.placeholderText() == "Kobieta":
@@ -709,7 +710,7 @@ class StartWindowUi(object):
             self.person_to_edit_illnesses = []
         if len(self.person_to_edit_residences) == 1 and self.person_to_edit_residences[0] is None:
             self.person_to_edit_residences = []
-        if len(self.person_to_edit_partners) == 1 and self.person_to_edit_partners[0] is None:
+        if len(self.person_to_edit_partners) == 1 and self.person_to_edit_partners is {None}:
             self.person_to_edit_partners = []
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 2 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -760,7 +761,8 @@ class StartWindowUi(object):
                                   'mother_id': self.person_to_edit_mother_id, 'first_name': self.e1.text(),
                                   'last_name': self.e2.text(), 'birth_date': self.person_to_edit_birth_date,
                                   'death_date': self.person_to_edit_death_date,
-                                  'partners_id': self.person_to_edit_partners, 'gender': self.person_to_edit_gender,
+                                  'partners_id': list(self.person_to_edit_partners),
+                                  'gender': self.person_to_edit_gender,
                                   'death_reason': self.person_to_edit_death_reason,
                                   'birth_place': self.person_to_edit_birth_place,
                                   'profession': self.person_to_edit_professions,
@@ -974,7 +976,8 @@ class StartWindowUi(object):
                                   'mother_id': self.person_to_edit_mother_id, 'first_name': self.e1.text(),
                                   'last_name': self.e2.text(), 'birth_date': self.person_to_edit_birth_date,
                                   'death_date': self.person_to_edit_death_date,
-                                  'partners_id': self.person_to_edit_partners, 'gender': self.person_to_edit_gender,
+                                  'partners_id': list(self.person_to_edit_partners),
+                                  'gender': self.person_to_edit_gender,
                                   'death_reason': self.person_to_edit_death_reason,
                                   'birth_place': self.person_to_edit_birth_place,
                                   'profession': self.person_to_edit_professions,
@@ -1544,17 +1547,45 @@ class StartWindowUi(object):
         self.verticalLayout_6.addWidget(self.info_label)
 
     def choose_tree_to_analise_clicked(self):
-        # tree_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees.currentText()
+        self.places_plot()
+        self.info_window()
+
+    def places_plot(self):
         self.tree_to_open = self.trees.currentText()
-        main_person, person_list = read_data(self.tree_to_open, 1, flag = True)
+        main_person, person_list = read_data(self.tree_to_open, 1, flag=True)
         self.update_dicts()
         places_count_list = [0 for _ in range(max(self.places_dicts.values()))]
         for person in person_list:
             for place in person.residences:
-                places_count_list[self.places_dicts.get(place)] += 1
+                places_count_list[self.places_dicts.get(place) - 1] += 1
 
-        fig = plt.figure()
-        ax = fig.add_axes([0, 0, 1, 1])
-        places_names = [self.places_dicts.keys()[index] for index in range(max(self.places_dicts.values()))]
-        ax.bar(places_names, places_count_list)
+        fig, ax = plt.subplots(figsize=(8, 4.5))
+        ax.barh(self.places, places_count_list)
+        for s in ['top', 'bottom', 'left', 'right']:
+            ax.spines[s].set_visible(False)
+        ax.xaxis.set_ticks_position('none')
+        ax.yaxis.set_ticks_position('none')
+        ax.xaxis.set_tick_params(pad=5)
+        ax.yaxis.set_tick_params(pad=10)
+        ax.grid(color='grey',
+                linestyle='-.', linewidth=0.5,
+                alpha=0.2)
+        ax.invert_yaxis()
+        for i in ax.patches:
+            plt.text(i.get_width() + 0.2, i.get_y() + 0.5,
+                     str(round((i.get_width()), 2)),
+                     fontsize=10, fontweight='bold',
+                     color='grey')
+        ax.set_title("Podział ludzi między miastami",
+                     loc='left', )
         plt.show()
+
+    def info_window(self):
+        main_person, person_list = read_data(self.tree_to_open, 1, flag=True)
+        self.update_dicts()
+        places_count_list = [0 for _ in range(max(self.places_dicts.values()))]
+        for person in person_list:
+            for place in person.residences:
+                places_count_list[self.places_dicts.get(place) - 1] += 1
+        self.info_window = InfoWindow(person_list, self.places[places_count_list.index(max(places_count_list))])
+        self.info_window.show()
