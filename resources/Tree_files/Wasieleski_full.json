@@ -22,6 +22,100 @@
     ]
   },
   {
+    "person_id": 3,
+    "father_id": 2,
+    "mother_id": 1,
+    "first_name": "Justyna",
+    "last_name": "Wasieleska",
+    "birth_date": "01-01-1970",
+    "death_date": null,
+    "partners_id": [
+      6
+    ],
+    "gender": 0,
+    "death_reason": null,
+    "birth_place": 1,
+    "profession": [],
+    "illnesses": [
+      3
+    ],
+    "residences": [
+      1
+    ]
+  },
+  {
+    "person_id": 4,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Danuta",
+    "last_name": "Wasieleska",
+    "birth_date": "01-01-1940",
+    "death_date": null,
+    "partners_id": [
+      5
+    ],
+    "gender": 0,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": [],
+    "illnesses": [],
+    "residences": [
+      4
+    ]
+  },
+  {
+    "person_id": 5,
+    "father_id": 0,
+    "mother_id": 0,
+    "first_name": "Jan",
+    "last_name": "Wasieleski",
+    "birth_date": "01-01-1940",
+    "death_date": null,
+    "partners_id": [
+      4
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": [],
+    "illnesses": [],
+    "residences": []
+  },
+  {
+    "person_id": 6,
+    "father_id": 5,
+    "mother_id": 4,
+    "first_name": "Krzysztof",
+    "last_name": "Wasieleski",
+    "birth_date": "01-01-1970",
+    "death_date": null,
+    "partners_id": [
+      3
+    ],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": [],
+    "illnesses": [],
+    "residences": []
+  },
+  {
+    "person_id": 7,
+    "father_id": 6,
+    "mother_id": 3,
+    "first_name": "Juliusz",
+    "last_name": "Wasieleski",
+    "birth_date": "01-01-2000",
+    "death_date": null,
+    "partners_id": [],
+    "gender": 1,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": [],
+    "illnesses": [],
+    "residences": []
+  },
+  {
     "person_id": 10,
     "father_id": 0,
     "mother_id": 0,
@@ -71,22 +165,7 @@
     "illnesses": [],
     "residences": []
   },
-  {
-    "person_id": 12,
-    "father_id": 9,
-    "mother_id": 10,
-    "first_name": "Bo\u017cena",
-    "last_name": "Melkowska",
-    "birth_date": "01-01-1960",
-    "death_date": null,
-    "partners_id": [],
-    "gender": 0,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": []
-  },
+
   {
     "person_id": 14,
     "father_id": 0,
@@ -105,6 +184,22 @@
     "illnesses": [],
     "residences": []
   },
+   {
+    "person_id": 12,
+    "father_id": 9,
+    "mother_id": 10,
+    "first_name": "Bo\u017cena",
+    "last_name": "Melkowska",
+    "birth_date": "01-01-1960",
+    "death_date": null,
+    "partners_id": [],
+    "gender": 0,
+    "death_reason": null,
+    "birth_place": null,
+    "profession": [],
+    "illnesses": [],
+    "residences": []
+  },
   {
     "person_id": 15,
     "father_id": 0,
@@ -116,7 +211,7 @@
     "partners_id": [
       14
     ],
-    "gender": 1,
+    "gender": 0,
     "death_reason": null,
     "birth_place": null,
     "profession": [],
@@ -328,10 +423,7 @@
     "last_name": "Melkowski",
     "birth_date": "01-01-2000",
     "death_date": null,
-    "partners_id": [
-      26,
-      26
-    ],
+    "partners_id": [],
     "gender": 1,
     "death_reason": null,
     "birth_place": null,
@@ -356,134 +448,5 @@
       3
     ],
     "residences": []
-  },
-  {
-    "person_id": 5,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Jan",
-    "last_name": "Wasieleski",
-    "birth_date": "01-01-1940",
-    "death_date": null,
-    "partners_id": [
-      4,
-      4
-    ],
-    "gender": 1,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": [
-      8
-    ]
-  },
-  {
-    "person_id": 4,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Danuta",
-    "last_name": "Wasieleska",
-    "birth_date": "01-01-1940",
-    "death_date": null,
-    "partners_id": [
-      5
-    ],
-    "gender": 0,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": [
-      1,
-      4,
-      8
-    ]
-  },
-  {
-    "person_id": 3,
-    "father_id": 2,
-    "mother_id": 1,
-    "first_name": "Justyna",
-    "last_name": "Wasieleska",
-    "birth_date": "01-01-1970",
-    "death_date": null,
-    "partners_id": [
-      6,
-      6
-    ],
-    "gender": 0,
-    "death_reason": null,
-    "birth_place": 1,
-    "profession": [],
-    "illnesses": [
-      3
-    ],
-    "residences": [
-      1
-    ]
-  },
-  {
-    "person_id": 26,
-    "father_id": 0,
-    "mother_id": 0,
-    "first_name": "Barbara",
-    "last_name": "Melkowska",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      25
-    ],
-    "gender": 0,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": [
-      3
-    ]
-  },
-  {
-    "person_id": 6,
-    "father_id": 5,
-    "mother_id": 4,
-    "first_name": "Krzysztof",
-    "last_name": "Wasieleski",
-    "birth_date": "01-01-1970",
-    "death_date": null,
-    "partners_id": [
-      3
-    ],
-    "gender": 1,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": [
-      1,
-      8,
-      9
-    ]
-  },
-  {
-    "person_id": 7,
-    "father_id": 6,
-    "mother_id": 3,
-    "first_name": "Juliusz",
-    "last_name": "Wasieleski",
-    "birth_date": "01-01-2000",
-    "death_date": null,
-    "partners_id": [
-      null
-    ],
-    "gender": 1,
-    "death_reason": null,
-    "birth_place": null,
-    "profession": [],
-    "illnesses": [],
-    "residences": [
-      1,
-      7
-    ]
   }
 ]
