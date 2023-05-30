@@ -454,3 +454,95 @@ START_WINDOW_FIND_RELATION_CSS = \
             background-color: rgba(80,90,120,255);
         }
     """
+START_WINDOW_FIND_SIMILARITIES_CSS = \
+    """
+        #find_similarities {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+            border: 2px solid white;
+            border-color: rgba(44,49,62,255);
+        }
+        #error_lbl {
+            background-color: rgba(44,49,62,255);
+            color: "red";
+        }
+        QWidget {
+            background-color: rgba(27,29,35,255);
+            color: "white";
+        }
+        #verticalLayoutWidget_6 {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        #verticalLayoutWidget_7 {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        QLabel {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        QRadioButton {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        QComboBox {
+                                        background-color: rgba(80,90,120,255);
+                                    }
+        QScrollArea{
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        #label{
+             background-color: rgba(27,29,35,255)
+        }
+        QLineEdit {
+            background-color: rgba(80,90,120,255);
+        }
+    """
+START_WINDOW_ANALISE_TREE_CSS = \
+    """
+        #analise_tree {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+            border: 2px solid white;
+            border-color: rgba(44,49,62,255);
+        }
+        #error_lbl {
+            background-color: rgba(44,49,62,255);
+            color: "red";
+        }
+        QWidget {
+            background-color: rgba(27,29,35,255);
+            color: "white";
+        }
+        #verticalLayoutWidget_6 {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        #verticalLayoutWidget_7 {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        QLabel {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        QRadioButton {
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        QComboBox {
+                                        background-color: rgba(80,90,120,255);
+                                    }
+        QScrollArea{
+            background-color: rgba(44,49,62,255);
+            color: "white";
+        }
+        #label{
+             background-color: rgba(27,29,35,255)
+        }
+        QLineEdit {
+            background-color: rgba(80,90,120,255);
+        }
+    """

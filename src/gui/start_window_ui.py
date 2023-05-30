@@ -61,6 +61,7 @@ class StartWindowUi(object):
         self.e3 = None
         self.e2 = None
         self.e1 = None
+        self.error_label = QtWidgets.QLabel()
         self.widget = None
         self.open_tree_bt = None
         self.add_tree_bt = None
@@ -71,6 +72,8 @@ class StartWindowUi(object):
         self.verticalLayout_4 = None
         self.verticalLayoutWidget_4 = None
         self.verticalLayout_3 = None
+        self.find_similarities = QtWidgets.QPushButton()
+        self.analise_tree = QtWidgets.QPushButton()
         self.verticalLayoutWidget_3 = None
         self.verticalLayoutWidget_3 = None
         self.horizontalLayout = None
@@ -147,6 +150,7 @@ class StartWindowUi(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout.addWidget(self.error_label)
 
         self.verticalLayoutWidget_3 = QtWidgets.QWidget(parent=self.central_widget)
         self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(0, Y2, X1, WIN_HEIGHT - Y2))
@@ -243,8 +247,18 @@ class StartWindowUi(object):
         self.find_relation.setObjectName("find_relation")
         self.verticalLayout_2.addWidget(self.find_relation)
         self.find_relation.clicked.connect(self.find_relation_clicked)
+        self.find_similarities.setAutoDefault(False)
+        self.find_similarities.setObjectName("find_similarities")
+        self.verticalLayout_2.addWidget(self.find_similarities)
+        self.find_similarities.clicked.connect(self.find_similarities_clicked)
+
+        self.analise_tree.setAutoDefault(False)
+        self.analise_tree.setObjectName("analise_tree")
+        self.verticalLayout_2.addWidget(self.analise_tree)
+        self.analise_tree.clicked.connect(self.analise_tree_clicked)
 
         self.translate_ui(main_window)
+
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def translate_ui(self, main_window: QMainWindow) -> None:
@@ -261,6 +275,8 @@ class StartWindowUi(object):
         self.add_illness.setText(_translate("MainWindow", "Dodaj chorobę"))
         self.add_profession.setText(_translate("MainWindow", "Dodaj zawód"))
         self.find_relation.setText(_translate("MainWindow", "Znajdź pokrewieństwo"))
+        self.find_similarities.setText(_translate("MainWindow", "Znajdź podobieństwa"))
+        self.analise_tree.setText(_translate("MainWindow", "Analizuj drzewo"))
 
     # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 1 - dodawanie drzewa z pliku $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     def add_saved_trees(self) -> None:
@@ -386,12 +402,11 @@ class StartWindowUi(object):
             self.verticalLayout_3.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_4.count())):
             self.verticalLayout_4.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.horizontalLayout.count())):
-            self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_7.count())):
             self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
 
         self.MainWindow.setStyleSheet(START_WINDOW_PREPARE_BACKGROUND_CSS)
         self.tree_to_open = None
@@ -774,7 +789,7 @@ class StartWindowUi(object):
         self.import_data_from_tree()
 
     def find_person_in_tree(self) -> None:
-        main_person = read_data(self.tree_to_open, 1)
+        main_person = read_data(self.tree_to_open, 1, flag=True)
         output_list = []
         que = deque()
         que.append(main_person)
@@ -1021,8 +1036,7 @@ class StartWindowUi(object):
             self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_7.count())):
-            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_TREE_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
@@ -1104,8 +1118,7 @@ class StartWindowUi(object):
             self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_7.count())):
-            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_CITY_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
@@ -1208,8 +1221,7 @@ class StartWindowUi(object):
             self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_7.count())):
-            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_ILLNESS_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
@@ -1260,8 +1272,7 @@ class StartWindowUi(object):
             self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_7.count())):
-            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_ADD_PROFESSION_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, NEW_PARAMETER_WINDOW_HEIGHT)
@@ -1312,8 +1323,7 @@ class StartWindowUi(object):
             self.horizontalLayout.itemAt(i).widget().setParent(None)
         for i in reversed(range(self.verticalLayout_6.count())):
             self.verticalLayout_6.itemAt(i).widget().setParent(None)
-        for i in reversed(range(self.verticalLayout_7.count())):
-            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
         self.MainWindow.setStyleSheet(START_WINDOW_FIND_RELATION_CSS)
         self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
         self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, Y4)
@@ -1392,3 +1402,125 @@ class StartWindowUi(object):
             csvreader = reader(file)
             for row in csvreader:
                 self.trees_list.append(row[1].strip())
+
+
+    # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 11 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    def find_similarities_clicked(self):
+        # TODO redundancja
+        for i in reversed(range(self.verticalLayout_3.count())):
+            self.verticalLayout_3.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_4.count())):
+            self.verticalLayout_4.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_7.count())):
+            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.MainWindow.setStyleSheet(START_WINDOW_FIND_SIMILARITIES_CSS)
+        self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
+        self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, Y4)
+        # self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
+        #                                         Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
+
+        tree_lbl = QtWidgets.QLabel()
+        tree_lbl.setText("wybierz pierwsze drzewo do znalezienia podobieństw:")
+        tree_lbl.setObjectName("lbl")
+        self.verticalLayout_6.addWidget(tree_lbl)
+
+        self.load_saved_trees()
+        self.trees = QtWidgets.QComboBox()
+        self.trees.setPlaceholderText("wybierz drzewo")
+        self.trees.addItems(self.trees_list)
+        self.verticalLayout_6.addWidget(self.trees)
+
+        tree_lbl2 = QtWidgets.QLabel()
+        tree_lbl2.setText("wybierz drugie drzewo do znalezienia podobieństw:")
+        tree_lbl2.setObjectName("lbl2")
+        self.verticalLayout_6.addWidget(tree_lbl2)
+
+        self.load_saved_trees()
+        self.trees2 = QtWidgets.QComboBox()
+        self.trees2.setPlaceholderText("wybierz drzewo")
+        self.trees2.addItems(self.trees_list)
+        self.verticalLayout_6.addWidget(self.trees2)
+
+        self.choose_tree_to_similarities = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        self.choose_tree_to_similarities.setFont(font)
+        self.choose_tree_to_similarities.setAutoDefault(False)
+        self.choose_tree_to_similarities.clicked.connect(self.choose_tree_to_similarities_clicked)
+        self.verticalLayout_6.addWidget(self.choose_tree_to_similarities)
+        self.choose_tree_to_similarities.setText("W tym drzewie znajdź podobieństwa")
+
+        self.error_label = QtWidgets.QLabel()
+        self.error_label.setFont(QFont("Arial", 15))
+        self.error_label.setObjectName("error_lbl")
+        self.verticalLayout_6.addWidget(self.error_label)
+
+    def choose_tree_to_similarities_clicked(self):
+        tree_first_path = ROOT_DIR+"\\resources\\Tree_files\\"+self.trees.currentText()
+        tree_second_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees2.currentText()
+        # if funkcja_do_szukania_podobieństwa(tree_first_path, tree_second_path):
+        #     self.error_label.setText("udało się znaleźć podobieństwa")
+        #      # TODO czy robimy mergowanie tych drzew?
+        #     self.merge_trees = QtWidgets.QPushButton()
+        #     self.merge_trees.setAutoDefault(False)
+        #     self.merge_trees.clicked.connect(self.merge_trees_clicked)
+        #     self.verticalLayout_6.addWidget(self.merge_trees)
+        #     self.choose_tree_to_similarities.setText("Połącz te drzewa")
+        # else:
+        #     self.error_label.setText("nie udało się znaleźć podobieństwa")
+        # pass
+
+    def merge_trees_clicked(self):
+        # TODO do wywalenie jak nie mergujemy tych drzew
+        pass
+
+    # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Przycisk 12 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    def analise_tree_clicked(self):
+        # TODO redundancja
+        for i in reversed(range(self.verticalLayout_3.count())):
+            self.verticalLayout_3.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_4.count())):
+            self.verticalLayout_4.itemAt(i).widget().setParent(None)
+        self.error_label.setText(" ")
+        for i in reversed(range(self.verticalLayout_6.count())):
+            self.verticalLayout_6.itemAt(i).widget().setParent(None)
+        for i in reversed(range(self.verticalLayout_7.count())):
+            self.verticalLayout_7.itemAt(i).widget().setParent(None)
+        self.MainWindow.setStyleSheet(START_WINDOW_ANALISE_TREE_CSS)
+        self.verticalLayoutWidget_4.setGeometry(X2, Y1, 0, 0)
+        self.verticalLayoutWidget_6.setGeometry(X1, Y1, WIN_WIDTH - X1, Y4)
+        # self.verticalLayoutWidget_7.setGeometry(X1, Y1 + NEW_PARAMETER_WINDOW_HEIGHT, WIN_WIDTH - X1,
+        #                                         Y4 - NEW_PARAMETER_WINDOW_HEIGHT - Y1)
+
+        tree_lbl = QtWidgets.QLabel()
+        tree_lbl.setText("wybierz drzewo do przeanalizowania:")
+        tree_lbl.setObjectName("lbl")
+        self.verticalLayout_6.addWidget(tree_lbl)
+
+        self.load_saved_trees()
+        self.trees = QtWidgets.QComboBox()
+        self.trees.setPlaceholderText("wybierz drzewo")
+        self.trees.addItems(self.trees_list)
+        self.verticalLayout_6.addWidget(self.trees)
+
+        self.choose_tree_to_analise = QtWidgets.QPushButton()
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        self.choose_tree_to_analise.setFont(font)
+        self.choose_tree_to_analise.setAutoDefault(False)
+        self.choose_tree_to_analise.clicked.connect(self.choose_tree_to_analise_clicked)
+        self.verticalLayout_6.addWidget(self.choose_tree_to_analise)
+        self.choose_tree_to_analise.setText("W to drzewo analizuj")
+
+        self.error_label = QtWidgets.QLabel()
+        self.error_label.setFont(QFont("Arial", 15))
+        self.error_label.setObjectName("error_lbl")
+        self.verticalLayout_6.addWidget(self.error_label)
+
+    def choose_tree_to_analise_clicked(self):
+        tree_path = ROOT_DIR + "\\resources\\Tree_files\\" + self.trees.currentText()
