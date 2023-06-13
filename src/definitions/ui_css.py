@@ -59,7 +59,7 @@ START_WINDOW_SHOW_SAVED_TREES_CSS = BASE + WIG_4 + WIG_6 + \
               
     """
 
-START_WINDOW_PREPARE_BACKGROUND_CSS = BASE + WIG_4 + """
+START_WINDOW_PREPARE_BACKGROUND_CSS = BASE + WIG_4 + WIG_6 + """
                            #add_person {
                                background-color: rgba(44,49,62,255);
                                color: "white";
@@ -112,7 +112,6 @@ START_WINDOW_ADD_TREE_CSS = BASE + WIG_6 + \
         #info_lbl {
             background-color: rgba(44,49,62,255);
             color: "red";
-        }color: "white";
         }
         #verticalLayoutWidget_7 {
             background-color: rgba(44,49,62,255);

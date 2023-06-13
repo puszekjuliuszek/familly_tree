@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow
-from src.gui.start_window_ui import StartWindowUi
+from src.gui.start_window_methods.start_window_ui import StartWindowUi
 import sys
 
 
