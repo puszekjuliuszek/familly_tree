@@ -9,4 +9,3 @@ def json_to_dict(path: str) -> dict:
         output[dictionary['name']] = dictionary['id']
         # TODO jakoś, żeby nie było zależne od id oraz name
     return output
-

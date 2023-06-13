@@ -2,7 +2,7 @@ import json
 from src.definitions.definitions import ROOT_DIR
 
 
-def save_informations(file_name:str, given_names):
+def save_information(file_name: str, given_names):
     if given_names is None:
         return None
     if given_names is []:
@@ -13,8 +13,7 @@ def save_informations(file_name:str, given_names):
     with open(file_path) as f:
         json_data = json.load(f)
 
-
-    if isinstance(given_names,list):
+    if isinstance(given_names, list):
         found_ids = []
         for information_data in json_data:
             if information_data['name'] in given_names:
@@ -26,4 +25,3 @@ def save_informations(file_name:str, given_names):
                 return information_data['id']
 
     return None
-

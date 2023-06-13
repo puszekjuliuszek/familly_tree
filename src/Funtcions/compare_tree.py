@@ -1,15 +1,16 @@
 from src.io_functions.read_data import read_data
 
-#TODO tworzyc to nowe polączone drzewo?
+# TODO tworzyc to nowe polączone drzewo?
 
-# def connect_trees(accepted_matches: list, tree1_person_list:list, tree2_person_list:list):
-#
+# def connect_trees(accepted_matches: list, tree1_person_list:list,
+#                   tree2_person_list:list):
+
 #     for tree1_person,tree2_person in accepted_matches:
 #         tree1_person
 
 
-
-def find_matching(tree1_list: list, tree2_list: list, minimum_matching: int, matches: list) -> None:
+def find_matching(tree1_list: list, tree2_list: list, minimum_matching: int,
+                  matches: list) -> None:
     for tree1_person in tree1_list:
         for tree2_person in tree2_list:
             if tree1_person.check_matching(tree2_person) >= minimum_matching:
@@ -30,19 +31,20 @@ def split_gender(people_list) -> (list, list):
     return man_list, woman_list
 
 
-def compare_tree(tree_path1: str, tree_path2: str, minimum_matching: int,)->list:
+def compare_tree(tree_path1: str, tree_path2: str, minimum_matching: int,) \
+        -> list:
     _, tree1_people_list = read_data(tree_path1, flag=True)
     _, tree2_people_list = read_data(tree_path2, flag=True)
 
     tree1_man_list, tree1_woman_list = split_gender(tree1_people_list)
     tree2_man_list, tree2_woman_list = split_gender(tree2_people_list)
 
-    matches = [] #lista krotek z obiektami klasy Person miedzy ktorymi występuje podobienstwo
+    matches = []  # lista krotek z obiektami klasy Person miedzy ktorymi
+    # występuje podobienstwo
 
     find_matching(tree1_man_list, tree2_man_list, minimum_matching, matches)
-    find_matching(tree1_woman_list, tree2_woman_list, minimum_matching, matches)
-
-
+    find_matching(tree1_woman_list, tree2_woman_list, minimum_matching,
+                  matches)
 
     return matches
 

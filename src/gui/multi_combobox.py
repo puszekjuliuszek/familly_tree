@@ -41,7 +41,8 @@ class CheckableComboBox(QComboBox):
         super().hidePopup()
         self.startTimer(100)
 
-    def addItems(self, items: typing.Iterable[str], item_list: list = None) -> None:
+    def addItems(self, items: typing.Iterable[str], item_list: list = None) \
+            -> None:
         for index, text in enumerate(items):
             try:
                 data = item_list[index]
@@ -55,7 +56,8 @@ class CheckableComboBox(QComboBox):
         if user_data is not None:
             item.setData(user_data)
 
-        item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsUserCheckable)
+        item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.
+                      ItemIsUserCheckable)
         item.setData(Qt.CheckState.Unchecked, Qt.ItemDataRole.CheckStateRole)
         self.model().appendRow(item)
 

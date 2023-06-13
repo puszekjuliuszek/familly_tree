@@ -7,4 +7,4 @@ class ChooseTreeWindow(QWidget):
     def __init__(self):
         super(ChooseTreeWindow, self).__init__()
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setup_ui(self)

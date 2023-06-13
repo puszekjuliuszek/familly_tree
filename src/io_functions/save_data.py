@@ -6,7 +6,7 @@ from src.definitions.definitions import ROOT_DIR
 
 
 def save_data(start_person: person.Person, file_name: str) -> None:
-    file_path = ROOT_DIR+ "\\resources\\Tree_files\\"+file_name
+    file_path = ROOT_DIR + "\\resources\\Tree_files\\" + file_name
     Q = queue.Queue()
     Q.put(start_person)
     dict_list = []

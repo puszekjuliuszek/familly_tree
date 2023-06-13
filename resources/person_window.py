@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'person_window.ui'
+# form implementation generated from reading ui file 'person_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.2
 #
@@ -11,7 +11,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectName("form")
         Form.resize(496, 454)
         self.scrollArea = QtWidgets.QScrollArea(parent=Form)
         self.scrollArea.setGeometry(QtCore.QRect(-1, -1, 501, 461))
@@ -41,10 +41,10 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "TextLabel"))
-        self.label_2.setText(_translate("Form", "TextLabel"))
-        self.label_3.setText(_translate("Form", "TextLabel"))
+        Form.setWindowTitle(_translate("form", "form"))
+        self.label.setText(_translate("form", "TextLabel"))
+        self.label_2.setText(_translate("form", "TextLabel"))
+        self.label_3.setText(_translate("form", "TextLabel"))
 
 
 if __name__ == "__main__":

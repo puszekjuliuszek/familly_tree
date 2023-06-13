@@ -1,6 +1,7 @@
 import os
 
-ROOT_DIR = "\\".join(os.path.dirname(os.path.abspath(__file__)).split("\\")[0:-2])
+ROOT_DIR = "\\".join(os.path.dirname(os.path.abspath(__file__)).split("\\")
+                     [0:-2])
 REGULAR_GAP = 30
 COUPLE_GAP = 10
 PERSON_WIDTH = 120

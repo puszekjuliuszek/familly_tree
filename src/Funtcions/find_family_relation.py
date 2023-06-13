@@ -77,7 +77,8 @@ def get_relation_array(path: list):
 
     person_tmp = path[0]
     for person_next in path[1:]:
-        if person_tmp.mother == person_next or person_tmp.father == person_next:
+        if person_tmp.mother == person_next or person_tmp.father == \
+                person_next:
             relation_array[0] += 1
             relation_array[2] = max(relation_array[0], relation_array[2])
         if person_next in person_tmp.partners:
@@ -91,20 +92,22 @@ def get_relation_array(path: list):
     return relation_array
 
 
-def find_family_relation(personFrom_id: int, personTo_id: int, file_name: str) -> str:
+def find_family_relation(personFrom_id: int, personTo_id: int,
+                         file_name: str) -> str:
 
     if personTo_id == personFrom_id:
         return "Received same person on both sides!"
 
-    personFrom, personTo = RD.read_data(file_name, personFrom_id, personTo_id, True)
-
+    personFrom, personTo = RD.read_data(file_name, personFrom_id, personTo_id,
+                                        True)
 
     if personFrom is None or personTo is None:
         return "Something went wrong during finding people in tree"
 
     path_between = BFS(personFrom, personTo)
     relation_array = get_relation_array(path_between)
-    relation_found, relation_type = Relations.get_relation(relation_array, personTo)
+    relation_found, relation_type = Relations.get_relation(relation_array,
+                                                           personTo)
 
     if relation_found:
         return f'{personTo} is {relation_type.lower()} to {personFrom}'

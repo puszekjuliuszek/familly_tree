@@ -30,13 +30,22 @@ class Person:
             self.birth_date = data_dict.get('birth_date')
             self.death_date = data_dict.get('death_date')
             self.gender = data_dict.get('gender')
-            self.death_reason = RI.read_informations(f'{self.tree_name}\\death_reasons.json',
-                                                     data_dict.get('death_reason'))
-            self.birth_place = RI.read_informations(f'{self.tree_name}\\cities.json', data_dict.get('birth_place'))
-            self.profession = RI.read_informations(f'{self.tree_name}\\professions.json', data_dict.get('profession'))
-            # TODO nie działa jak illnesses puste
-            self.illnesses = RI.read_informations(f'{self.tree_name}\\illnesses.json', data_dict.get('illnesses'))
-            self.residences = RI.read_informations(f'{self.tree_name}\\cities.json', data_dict.get('residences'))
+            self.death_reason = RI.read_informations(f'{self.tree_name}'
+                                                     f'\\death_reasons.json',
+                                                     data_dict.
+                                                     get('death_reason'))
+            self.birth_place = RI.read_informations(f'{self.tree_name}'
+                                                    f'\\cities.json', data_dict
+                                                    .get('birth_place'))
+            self.profession = RI.read_informations(f'{self.tree_name}'
+                                                   f'\\professions.json',
+                                                   data_dict.get('profession'))
+            self.illnesses = RI.read_informations(f'{self.tree_name}'
+                                                  f'\\illnesses.json',
+                                                  data_dict.get('illnesses'))
+            self.residences = RI.read_informations(f'{self.tree_name}'
+                                                   f'\\cities.json',
+                                                   data_dict.get('residences'))
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -58,7 +67,7 @@ class Person:
         if self.death_date is not None:
             print(f"Death date: {self.death_date}")
         else:
-            print(f"Death date: Alive")
+            print("Death date: Alive")
         if self.gender == 1:
             print("Gender: Male")
         else:
@@ -70,7 +79,7 @@ class Person:
         if self.death_date is not None:
             print(f"Death reason: {self.death_reason}")
         print(f"Residences: {self.residences}")
-        if self.profession != []:
+        if self.profession:
             print(f"Profession: {self.profession}")
         print(f"Illnesses: {self.illnesses}")
         print(f"Family Tree Name: {self.tree_name}")
@@ -97,11 +106,21 @@ class Person:
             "birth_date": self.birth_date,
             "death_date": self.death_date,
             "gender": self.gender,
-            "death_reason": SI.save_informations(f'{self.tree_name}\\death_reasons.json', self.death_reason),
-            "birth_place": SI.save_informations(f'{self.tree_name}\\cities.json', self.birth_place),
-            "profession": SI.save_informations(f'{self.tree_name}\\professions.json', self.profession),
-            "illnesses": SI.save_informations(f'{self.tree_name}\\illnesses.json', self.illnesses),
-            "residences": SI.save_informations(f'{self.tree_name}\\cities.json', self.residences)
+            "death_reason": SI.save_information(f'{self.tree_name}'
+                                                f'\\death_reasons.json',
+                                                self.death_reason),
+            "birth_place": SI.save_information(f'{self.tree_name}'
+                                               f'\\cities.json',
+                                               self.birth_place),
+            "profession": SI.save_information(f'{self.tree_name}'
+                                              f'\\professions.json',
+                                              self.profession),
+            "illnesses": SI.save_information(f'{self.tree_name}'
+                                             f'\\illnesses.json',
+                                             self.illnesses),
+            "residences": SI.save_information(f'{self.tree_name}'
+                                              f'\\cities.json',
+                                              self.residences)
         }
 
     def check_matching(self, other_person) -> int:
@@ -118,16 +137,17 @@ class Person:
             count += 1
         if self.birth_place == other_person.birth_place:
             count += 1
-        if self.compare_lists(self.profession,other_person.profession):
+        if self.compare_lists(self.profession, other_person.profession):
             count += 1
-        if self.compare_lists(self.illnesses,other_person.illnesses):
+        if self.compare_lists(self.illnesses, other_person.illnesses):
             count += 1
-        if self.compare_lists(self.residences,other_person.residences):
+        if self.compare_lists(self.residences, other_person.residences):
             count += 1
 
         return count
 
-    def compare_lists(self, first_list, second_list) -> bool:
+    @staticmethod
+    def compare_lists(first_list, second_list) -> bool:
         if len(first_list) != len(second_list):
             return False
         count = 0

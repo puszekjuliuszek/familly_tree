@@ -2,11 +2,11 @@ import json
 from src.definitions.definitions import ROOT_DIR
 
 
-def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> int:
+def binary_search(arr: list, target: int, left: int = 0, r: int = None) -> int:
     if r is None:
         r = len(arr) - 1
 
-    mid = (l + r) // 2
+    mid = (left + r) // 2
 
     if arr[mid].get("id") == target:
         return mid
@@ -14,7 +14,7 @@ def binary_search(arr: list, target: int, l: int = 0, r: int = None) -> int:
     if arr[mid].get("id") < target:
         return binary_search(arr, target, mid + 1, r)
     else:
-        return binary_search(arr, target, l, mid - 1, )
+        return binary_search(arr, target, left, mid - 1, )
 
 
 def read_informations(file_name: str, given_id):
@@ -44,4 +44,3 @@ def read_informations(file_name: str, given_id):
         dict = json_data[index]
         name = dict['name']
         return name
-
