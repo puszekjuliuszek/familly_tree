@@ -6,3 +6,4 @@ if __name__ == "__main__":
     main_person = read_data('Zawislak2.json', 10)
     main_person.print_tree()
     save_data(main_person, "Zawislak3.json")
+
